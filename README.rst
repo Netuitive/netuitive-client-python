@@ -2,13 +2,6 @@
 Netuitive Python Client
 ===============================
 
-
-
-Python Boilerplate contains all the boilerplate you need to create a Python package.
-
-* Free software: Apache License, Version 2.0
-* Documentation: https://netuitive.readthedocs.org.
-
 Features
 --------
 
