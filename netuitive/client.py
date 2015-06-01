@@ -15,7 +15,7 @@ class Client(object):
 
     """
 
-    def __init__(self, url='https://api.app.netuitive.com', api_key='apikey'):
+    def __init__(self, url='https://api.app.netuitive.com/ingest', api_key='apikey'):
         if url.endswith('/'):
             url = url[:-1]
 
@@ -23,7 +23,7 @@ class Client(object):
         self.api_key = api_key
 
     def post(self, element):
-        url = self.url + '/ingest/' + self.api_key
+        url = self.url + '/' + self.api_key
         payload = json.dumps([element], default=lambda o: o.__dict__)
         logging.debug(payload)
         try:
