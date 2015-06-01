@@ -16,6 +16,9 @@ class Client(object):
     """
 
     def __init__(self, url='https://api.app.netuitive.com', api_key='apikey'):
+        if url.endswith('/'):
+            url = url[:-1]
+
         self.url = url
         self.api_key = api_key
 
