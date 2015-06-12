@@ -10,8 +10,8 @@ class Element(object):
     An entity that represents the host that the agent runs on
     """
 
-    def __init__(self):
-        self.type = 'Server'
+    def __init__(self, ElementType='SERVER'):
+        self.type = ElementType
         self.tags = []
         self.attributes = []
         self.metrics = []

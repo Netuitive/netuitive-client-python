@@ -34,7 +34,10 @@ class TestElementInit(unittest.TestCase):
 
     def test(self):
         a = netuitive.Element()
-        self.failUnlessEqual(a.type, 'Server')
+        b = netuitive.Element('NOT_SERVER')
+
+        self.failUnlessEqual(a.type, 'SERVER')
+        self.failUnlessEqual(b.type, 'NOT_SERVER')
 
     def tearDown(self):
         pass
