@@ -3,7 +3,7 @@
 History
 -------
 
-0.0.4 (2015-06-12)
+0.0.5 (2015-06-12)
 ---------------------
 
 * Element type is now easier to set
