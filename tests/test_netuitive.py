@@ -9,7 +9,6 @@ Tests for `netuitive` module.
 """
 
 import unittest
-
 import netuitive
 
 
@@ -89,6 +88,12 @@ class TestElementSamples(unittest.TestCase):
 
         self.failUnlessEqual(a.metrics[0].id, 'metricId')
         self.failUnlessEqual(a.metrics[0].type, 'COUNTER')
+
+        a.add_sample(
+            'metricId', 1434110794, 1, 'COUNTER', host='hostname')
+
+        # don't allow duplicate metrics
+        self.failUnlessEqual(len(a.metrics), 1)
 
         self.failUnlessEqual(a.samples[0].metricId, 'metricId')
         self.failUnlessEqual(a.samples[0].timestamp, 1434110794000)

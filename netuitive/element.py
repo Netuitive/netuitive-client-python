@@ -23,14 +23,23 @@ class Element(object):
     def add_tag(self, name, value):
         self.tags.append(Tag(name, value))
 
-    def add_sample(self, metricId, timestamp, value, metricType=None, host=None):
+    def add_sample(self, metricId, timestamp, value,
+                   metricType=None, host=None):
         """
         add a metric sample
         """
 
         self.id = host
         self.name = host
-        self.metrics.append(Metric(metricId, metricType))
+        metric = Metric(metricId, metricType)
+
+        if len(self.metrics) > 0:
+            for m in self.metrics:
+                if metric.id != m.id:
+                    self.metrics.append(metric)
+        else:
+            self.metrics.append(metric)
+
         self.samples.append(Sample(metricId, timestamp * 1000, value))
 
     def clear_samples(self):
