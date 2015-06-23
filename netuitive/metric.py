@@ -9,6 +9,8 @@ class Metric(object):
 
     """
 
-    def __init__(self, metricId, metricType=None):
+    def __init__(self, metricId, metricType=None, sparseDataStrategy='None', unit=''):
         self.id = metricId
         self.type = metricType
+        self.sparseDataStrategy = sparseDataStrategy
+        self.unit = unit

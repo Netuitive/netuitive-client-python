@@ -99,6 +99,36 @@ class TestElementSamples(unittest.TestCase):
         self.failUnlessEqual(a.samples[0].timestamp, 1434110794000)
         self.failUnlessEqual(a.samples[0].val, 1)
 
+        # test clear_samples
+        self.failUnlessEqual(len(a.metrics), 1)
+        a.clear_samples()
+        self.failUnlessEqual(len(a.metrics), 0)
+        self.failUnlessEqual(len(a.samples), 0)
+
+        # test sparseDataStrategy
+        a.add_sample(
+            'nonsparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname')
+        a.add_sample(
+            'sparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname', sparseDataStrategy='ReplaceWithZero')
+
+        self.failUnlessEqual(a.metrics[0].sparseDataStrategy, 'None')
+        self.failUnlessEqual(
+            a.metrics[1].sparseDataStrategy, 'ReplaceWithZero')
+
+        a.clear_samples()
+
+        # test unit
+        a.add_sample(
+            'unit', 1434110794, 1, 'COUNTER', host='hostname', unit='Bytes')
+
+        a.add_sample(
+            'nonunit', 1434110794, 1, 'COUNTER', host='hostname')
+
+        self.failUnlessEqual(
+            a.metrics[0].unit, 'Bytes')
+
+        self.failUnlessEqual(a.metrics[1].unit, '')
+
     def tearDown(self):
         pass
 

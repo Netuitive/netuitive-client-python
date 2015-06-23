@@ -3,6 +3,14 @@
 History
 -------
 
+0.0.6 (2015-06-23)
+---------------------
+
+* Add support for Spare Data Strategy and Unit settings for Metrics
+* Prevent duplicate metrics
+* Documentation improvements
+
+
 0.0.5 (2015-06-12)
 ---------------------
 

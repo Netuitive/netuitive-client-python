@@ -24,14 +24,14 @@ class Element(object):
         self.tags.append(Tag(name, value))
 
     def add_sample(self, metricId, timestamp, value,
-                   metricType=None, host=None):
+                   metricType=None, host=None, sparseDataStrategy='None', unit=''):
         """
         add a metric sample
         """
 
         self.id = host
         self.name = host
-        metric = Metric(metricId, metricType)
+        metric = Metric(metricId, metricType, sparseDataStrategy, unit)
 
         if len(self.metrics) > 0:
             for m in self.metrics:

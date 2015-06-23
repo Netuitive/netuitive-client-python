@@ -31,6 +31,13 @@ Usage
 * Add a Metric Sample
     ``MyElement.add_sample('cpu.idle', 1432832135, 1, host='my_hostname')``
 
+* Add a Metric Sample with a Sparse Data Strategy
+    ``MyElement.add_sample('app.zero', 1432832135, 1, host='my_hostname', sparseDataStrategy='ReplaceWithZero')``
+
+* Add a Metric Sample with unit type
+    ``MyElement.add_sample('app.requests', 1432832135, 1, host='my_hostname', unit='requests/s')``
+
+
 * Send the Samples
     ``ApiClient.post(MyElement)``
 
@@ -43,7 +50,7 @@ Example
 
     import netuitive
 
-    ApiClient = netuitive.Client(apikey='aaaa9956110211e594931697f925ec7b')
+    ApiClient = netuitive.Client(apikey='aaaa9956110211e594444697f922ec7b')
 
     MyElement = netuitive.Element()
 
