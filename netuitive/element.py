@@ -34,9 +34,12 @@ class Element(object):
         metric = Metric(metricId, metricType, sparseDataStrategy, unit)
 
         if len(self.metrics) > 0:
+            t = []
             for m in self.metrics:
-                if metric.id != m.id:
-                    self.metrics.append(metric)
+                t.append(m.id)
+
+            if metric.id not in t:
+                self.metrics.append(metric)
         else:
             self.metrics.append(metric)
 
