@@ -219,9 +219,9 @@ class TestEvent(unittest.TestCase):
         # test event with minimum options
 
         shouldbetrue = False
-        print(minimum.timestamp)
-        t = int(time.gmtime())
-        if t >= int(minimum.timestamp) <= t + 10000:
+        t = int(time.time()) * 1000
+
+        if t - 100000 <= int(minimum.timestamp) <= t + 100000:
             shouldbetrue = True
 
         self.assertTrue(shouldbetrue)
