@@ -11,42 +11,62 @@ Features
     * Tags
     * Metric Samples
 
+* Create a Netuitive Event
 
 Usage
 -----
 
-* Setup the Client
-    ``ApiClient = netuitive.Client(api_key='<my_api_key>')``
+###### Setup the Client
+
+``ApiClient = netuitive.Client(api_key='<my_api_key>')``
 
 
-* Setup the Element
-    ``MyElement = netuitive.Element()``
+###### Setup the Element
 
-* Add an Attribute
-    ``MyElement.add_attribute('Language', 'Python')``
+``MyElement = netuitive.Element()``
 
-* Add a Tag
-    ``MyElement.add_tag(('Production', 'True')``
+###### Add an Attribute
 
-* Add a Metric Sample
-    ``MyElement.add_sample('cpu.idle', 1432832135, 1, host='my_hostname')``
+``MyElement.add_attribute('Language', 'Python')``
 
-* Add a Metric Sample with a Sparse Data Strategy
-    ``MyElement.add_sample('app.zero', 1432832135, 1, host='my_hostname', sparseDataStrategy='ReplaceWithZero')``
+###### Add a Tag
 
-* Add a Metric Sample with unit type
-    ``MyElement.add_sample('app.requests', 1432832135, 1, host='my_hostname', unit='requests/s')``
+``MyElement.add_tag('Production', 'True')``
+
+###### Add a Metric Sample
+
+``MyElement.add_sample('cpu.idle', 1432832135, 1, host='my_hostname')``
+
+###### Add a Metric Sample with a Sparse Data Strategy
+
+``MyElement.add_sample('app.zero', 1432832135, 1, host='my_hostname', sparseDataStrategy='ReplaceWithZero')``
+
+###### Add a Metric Sample with unit type
+
+``MyElement.add_sample('app.requests', 1432832135, 1, host='my_hostname', unit='requests/s')``
 
 
-* Send the Samples
-    ``ApiClient.post(MyElement)``
+###### Send the Samples
 
-* Remove the samples already sent
-    ``MyElement.clear_samples()``
+``ApiClient.post(MyElement)``
+
+###### Remove the samples already sent
+
+``MyElement.clear_samples()``
+
+
+###### Create an Event
+
+``MyEvent = netuitive.Event(hst, 'INFO', 'test event','big old test message', 'INFO')``
+
+###### Send the Event
+
+``ApiClient.post_event(MyEvent)``
+
 
 Example
 -------
-::
+
 
     import netuitive
 
@@ -57,8 +77,8 @@ Example
     MyElement.add_attribute('Language', 'Python')
     MyElement.add_attribute('app_version', '7.0')
 
-    MyElement.add_tag(('Production', 'True')
-    MyElement.add_tag(('app_tier', 'True')
+    MyElement.add_tag('Production', 'True')
+    MyElement.add_tag('app_tier', 'True')
 
     MyElement.add_sample('app.error', 1432832135, 1, host='appserver01')
     MyElement.add_sample('app.request', 1432832135, 10, host='appserver01')
@@ -66,6 +86,10 @@ Example
     ApiClient.post(MyElement)
 
     MyElement.clear_samples()
+
+    MyEvent = netuitive.Event(hst, 'INFO', 'test event','big old test message', 'INFO')
+
+    ApiClient.post_event(MyEvent)
 
 
 Copyright and License

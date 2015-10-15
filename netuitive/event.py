@@ -7,13 +7,14 @@ class Event(object):
     """An Event
 
     Args:
-
+        elementId (string): <element FQN>
         eventType (string): type of the event
-        title (string):  title of the event
-        data (string):  data specific to the type of the event,
-        tags (list):  tags for this event
+        title (string): title of the event
+        message (string): the event message
+        level (string): one of [INFO, WARNING, CRITICAL]
+        tags (list of lists):  tags for this event
         timestamp (epoch) : The timestamp of the event
-
+        source (string): the source of the event
     """
 
     def __init__(self, elementId, eventType, title, message, level, tags=None, timestamp=None, source=None):
@@ -46,8 +47,7 @@ class EventType(object):
         eventType (string): type of the event
         elementId (string): <element FQN>
         level (string): one of [INFO, WARNING, CRITICAL]
-        message: ""
-
+        message (string): the message
     """
 
     def __init__(self, elementId, eventType, message=None, level=None):
