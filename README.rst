@@ -2,6 +2,12 @@
 Netuitive Python Client
 ===============================
 
+What is Netuitive monitoring?
+-----------------------------
+Netuitive provides an adaptive monitoring and analytics platform for cloud infrastructure and web applications.
+Netuitive learns behaviors and utilizes pre-set dynamic policies that reduce the manual effort and human-guesswork typically required to monitor systems and applications.
+This unique technology enables IT operations and developers to automate performance analysis, detect relevant anomalies, and determine efficient capacity utilization.
+
 Features
 --------
 
@@ -11,7 +17,15 @@ Features
     * Tags
     * Metric Samples
 
-* Create a Netuitive Event
+* Create a Netuitive Event with the following data
+    * Element Name
+    * Event Type
+    * Title
+    * Message
+    * Level
+    * Tags
+    * Source
+
 
 Usage
 -----
