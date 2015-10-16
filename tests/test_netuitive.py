@@ -156,8 +156,8 @@ class TestElementSamples(unittest.TestCase):
 
         # test post format for element
 
-        ajson = json.dumps([a], default=lambda o: o.__dict__)
-        j = '[{"name": "hostname", "tags": [], "metrics": [{"type": "COUNTER", "id": "unit", "unit": "Bytes", "sparseDataStrategy": "None"}, {"type": "COUNTER", "id": "nonunit", "unit": "", "sparseDataStrategy": "None"}], "samples": [{"timestamp": 1434110794000, "metricId": "unit", "val": 1}, {"timestamp": 1434110794000, "metricId": "nonunit", "val": 1}], "attributes": [], "type": "SERVER", "id": "hostname"}]'
+        ajson = json.dumps([a], default=lambda o: o.__dict__, sort_keys=True)
+        j = '[{"attributes": [], "id": "hostname", "metrics": [{"id": "unit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": "Bytes"}, {"id": "nonunit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}], "name": "hostname", "samples": [{"metricId": "unit", "timestamp": 1434110794000, "val": 1}, {"metricId": "nonunit", "timestamp": 1434110794000, "val": 1}], "tags": [], "type": "SERVER"}]'
 
         self.assertEqual(ajson, j)
 
@@ -181,13 +181,13 @@ class TestEvent(unittest.TestCase):
             'elementId', 'INFO', 'title', 'message', 'INFO')
 
         everythingjson = json.dumps(
-            [everything], default=lambda o: o.__dict__)
+            [everything], default=lambda o: o.__dict__, sort_keys=True)
 
         notagsjson = json.dumps(
-            [notags], default=lambda o: o.__dict__)
+            [notags], default=lambda o: o.__dict__, sort_keys=True)
 
         minimumjson = json.dumps(
-            [minimum], default=lambda o: o.__dict__)
+            [minimum], default=lambda o: o.__dict__, sort_keys=True)
 
         # test event with all options
 
@@ -236,19 +236,19 @@ class TestEvent(unittest.TestCase):
 
         # test post format for event with all options
 
-        j = '[{"tags": [{"name": "name0", "value": "value0"}, {"name": "name1", "value": "value1"}], "eventType": "INFO", "title": "title", "source": "source", "timestamp": 1434110794000, "data": {"message": "message", "elementId": "elementId", "level": "INFO"}}]'
+        j = '[{"data": {"elementId": "elementId", "level": "INFO", "message": "message"}, "eventType": "INFO", "source": "source", "tags": [{"name": "name0", "value": "value0"}, {"name": "name1", "value": "value1"}], "timestamp": 1434110794000, "title": "title"}]'
 
         self.assertEqual(everythingjson, j)
 
         # test post format for event without tags
 
-        j = '[{"eventType": "INFO", "data": {"message": "message", "elementId": "elementId", "level": "INFO"}, "source": "source", "timestamp": 1434110794000, "title": "title"}]'
+        j = '[{"data": {"elementId": "elementId", "level": "INFO", "message": "message"}, "eventType": "INFO", "source": "source", "timestamp": 1434110794000, "title": "title"}]'
 
         self.assertEqual(notagsjson, j)
 
         # test post format for event with minimum options
 
-        j = '[{"eventType": "INFO", "data": {"message": "message", "elementId": "elementId", "level": "INFO"}, "timestamp": ' + \
+        j = '[{"data": {"elementId": "elementId", "level": "INFO", "message": "message"}, "eventType": "INFO", "timestamp": ' + \
             str(minimum.timestamp) + ', "title": "title"}]'
 
         self.assertEqual(minimumjson, j)
