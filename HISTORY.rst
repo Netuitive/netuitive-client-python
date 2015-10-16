@@ -7,6 +7,7 @@ History
 ---------------------
 
 * Add event support
+* Add Python 3 support
 
 
 0.0.7 (2015-06-23)
