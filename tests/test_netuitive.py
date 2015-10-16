@@ -221,7 +221,8 @@ class TestEvent(unittest.TestCase):
         shouldbetrue = False
         t = int(time.time()) * 1000
 
-        if t - 100000 <= int(minimum.timestamp) <= t + 100000:
+        # minimum.timstamp has to be within the 10 second
+        if t - 10000 < int(minimum.timestamp):
             shouldbetrue = True
 
         self.assertTrue(shouldbetrue)
