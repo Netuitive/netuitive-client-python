@@ -1,12 +1,13 @@
 
 class Attribute(object):
 
-    """A property or characteristic that is associated with Element
+    """
+        A property or characteristic that is associated with Element
 
-    Args:
-        name: The name of the attribute
-        value: The value of the attribute
-
+        :param name: Name of the attribute
+        :type name: string
+        :param value: Value of the attribute
+        :type value: string
     """
 
     def __init__(self, name, value):

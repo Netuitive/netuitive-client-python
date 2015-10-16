@@ -8,6 +8,10 @@ class Element(object):
 
     """
     An entity that represents the host that the agent runs on
+
+        :param ElementType: Type of the Element
+        :type ElementType: string
+
     """
 
     def __init__(self, ElementType='SERVER'):
@@ -18,15 +22,44 @@ class Element(object):
         self.samples = []
 
     def add_attribute(self, name, value):
+        """
+            :param name: Name of the attribute
+            :type name: string
+            :param value: Value of the attribute
+            :type value: string
+        """
+
         self.attributes.append(Attribute(name, value))
 
     def add_tag(self, name, value):
+        """
+            :param name: Name of the tag
+            :type name: string
+            :param value: Value of the tag
+            :type value: string
+        """
+
         self.tags.append(Tag(name, value))
 
     def add_sample(self, metricId, timestamp, value,
                    metricType=None, host=None, sparseDataStrategy='None', unit=''):
         """
-        add a metric sample
+            :param metricId: Metric FQN
+            :type metricId: string
+            :param timestamp: Timestamp for the sample
+            :type timestamp: int
+            :param value: Value of the metric
+            :type value: float
+            :param metricType: Metric Type
+            :type metricType: string
+            :param host: Element FQN
+            :type host: string
+            :param sparseDataStrategy: Sparse data strategy
+            :type sparseDataStrategy: string
+            :param unit: Metric Unit type
+            :type unit: string
+
+
         """
 
         self.id = host

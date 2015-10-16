@@ -9,13 +9,15 @@ except ImportError:
 
 class Client(object):
 
-    """Netuitive Rest Api Client for agent data ingest.
+    """
+        Netuitive Rest Api Client for agent data ingest.
+        Posts Element data to Netuitive Cloud
 
-    Posts Element data to Netuitive Cloud
+        :param url: Base data source URL
+        :type url: string
+        :param api_key: API Key for data source
+        :type api_key: string
 
-    Args:
-        url: The URL for the Netuitive Cloud API
-        api_keys: The API key provided by your Netuitive Cloud Data Source
 
     """
 
@@ -33,6 +35,11 @@ class Client(object):
     # these should probably return true on success
 
     def post(self, element):
+        """
+            :param element: Element to post to Netuitive
+            :type element: object
+        """
+
         payload = json.dumps([element], default=lambda o: o.__dict__)
         logging.debug(payload)
         try:
@@ -51,6 +58,11 @@ class Client(object):
                 self.dataurl, e)
 
     def post_event(self, event):
+        """
+            :param event: Event to post to Netuitive
+            :type event: object
+        """
+
         payload = json.dumps([event], default=lambda o: o.__dict__)
         logging.debug(payload)
         try:

@@ -3,18 +3,27 @@ from .tag import Tag
 
 
 class Event(object):
+    """
+        :param elementId: Element FQN
+        :type elementId: string
+        :param eventType: Type of event
+        :type eventType: string
+        :param title: Title of the event
+        :type title: string
+        :param message: The event message
+        :type message: string
+        :param level: One of [INFO, WARNING, CRITICAL]
+        :type level: string
+        :param tags: Tags for this event
+        :type tags: list
+        :param timestamp: Epoch timestamp of the event
+        :type timestamp: int
+        :param source: The source of the event
+        :type source: string
 
-    """An Event
+        :Example:
+        netuitive.Event('host01', 'INFO', 'test event', 'big old test message', 'INFO', [['tag1',val1],['tag2',val2]],1434110794,'deployment')
 
-    Args:
-        elementId (string): <element FQN>
-        eventType (string): type of the event
-        title (string): title of the event
-        message (string): the event message
-        level (string): one of [INFO, WARNING, CRITICAL]
-        tags (list of lists):  tags for this event
-        timestamp (epoch) : The timestamp of the event
-        source (string): the source of the event
     """
 
     def __init__(self, elementId, eventType, title, message, level, tags=None, timestamp=None, source=None):
@@ -41,13 +50,16 @@ class Event(object):
 
 class EventType(object):
 
-    """An Event
+    """
+        :param eventType: Type of the event
+        :type source: string
+        :param elementId: Element FQN
+        :type elementId: string
+        :param level: One of [INFO, WARNING, CRITICAL]
+        :type level: string
+        :param message: The event message
+        :type message: string
 
-    Args:
-        eventType (string): type of the event
-        elementId (string): <element FQN>
-        level (string): one of [INFO, WARNING, CRITICAL]
-        message (string): the message
     """
 
     def __init__(self, elementId, eventType, message=None, level=None):

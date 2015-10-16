@@ -1,13 +1,14 @@
 
 class Sample(object):
 
-    """A data point of the Metric
-
-    Args:
-        metricId: The name of the metric
-        timestamp: The timestamp of the sample
-        val: The value of the sample
-
+    """
+        A data point of the Metric
+        :param metricId: Metric FQN
+        :type metricId: string
+        :param timestamp: Timestamp for the sample
+        :type timestamp: int
+        :param value: Value of the metric
+        :type value: float
     """
 
     def __init__(self, metricId, timestamp, val):

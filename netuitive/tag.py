@@ -1,12 +1,13 @@
 
 class Tag(object):
 
-    """A label that is added to Element for grouping
+    """
+        A label that is added to Element for grouping
 
-    Args:
-        name: The name of the tag
-        value: The value of the tag
-
+        :param name: Name of the tag
+        :type name: string
+        :param value: Value of the tag
+        :type value: string
     """
 
     def __init__(self, name, value=None):
