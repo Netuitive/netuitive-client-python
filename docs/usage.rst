@@ -7,7 +7,7 @@ To use Netuitive Python Client in a project::
     import netuitive
 
     # Setup the Client
-    ApiClient = netuitive.Client('<my_api_url>', '<my_api_key>')
+    ApiClient = netuitive.Client(api_key='<my_api_key>')
 
     # setup the Element
     MyElement = netuitive.Element()
@@ -27,3 +27,8 @@ To use Netuitive Python Client in a project::
     # Remove the samples already sent
     MyElement.clear_samples()
 
+    # Create an Event
+    MyEvent = netuitive.Event('my_hostname', 'INFO', 'test event','big old test message', 'INFO')
+
+    # Send the Event
+    ApiClient.post_event(MyEvent)

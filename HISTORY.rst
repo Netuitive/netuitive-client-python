@@ -3,6 +3,13 @@
 History
 -------
 
+0.0.8 (XXXX-XX-XX)
+---------------------
+
+* Add event support
+* Add Python 3 support
+
+
 0.0.7 (2015-06-23)
 ---------------------
 

@@ -1,12 +1,17 @@
 
 class Metric(object):
 
-    """A performance measure that is associated with Element
+    """
+        A performance measure that is associated with Element
 
-    Args:
-        metricId: The name of the metric
-        metricType: The type of the metric
-
+        :param metricId: Metric FQN
+        :type metricId: string
+        :param metricType: Metric Type
+        :type metricType: string
+        :param sparseDataStrategy: Sparse data strategy
+        :type sparseDataStrategy: string
+        :param unit: Metric Unit type
+        :type unit: string
     """
 
     def __init__(self, metricId, metricType=None, sparseDataStrategy='None', unit=''):
