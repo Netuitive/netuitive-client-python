@@ -28,6 +28,14 @@ netuitive.element module
     :undoc-members:
     :show-inheritance:
 
+netuitive.event module
+----------------------
+
+.. automodule:: netuitive.event
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 netuitive.metric module
 -----------------------
 

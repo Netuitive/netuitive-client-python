@@ -41,6 +41,17 @@ class TestClientInit(unittest.TestCase):
         self.assertEqual(
             a.eventurl, 'https://example.com/ingest/events/infrastructure/apikey')
 
+    def test_minimum(self):
+
+        # test infrastructure endpoint url creation
+        a = netuitive.Client(api_key='apikey')
+        self.assertEqual(a.url, 'https://api.app.netuitive.com/ingest')
+        self.assertEqual(a.api_key, 'apikey')
+        self.assertEqual(
+            a.dataurl, 'https://api.app.netuitive.com/ingest/apikey')
+        self.assertEqual(
+            a.eventurl, 'https://api.app.netuitive.com/ingest/events/apikey')
+
     def test_trailing_slash(self):
 
         # test negation of trailing / on the url

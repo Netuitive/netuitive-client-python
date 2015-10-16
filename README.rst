@@ -70,7 +70,7 @@ Example
 
     import netuitive
 
-    ApiClient = netuitive.Client(apikey='aaaa9956110211e594444697f922ec7b')
+    ApiClient = netuitive.Client(api_key='aaaa9956110211e594444697f922ec7b')
 
     MyElement = netuitive.Element()
 
@@ -87,7 +87,7 @@ Example
 
     MyElement.clear_samples()
 
-    MyEvent = netuitive.Event(hst, 'INFO', 'test event','big old test message', 'INFO')
+    MyEvent = netuitive.Event('appserver01', 'INFO', 'test event','big old test message', 'INFO')
 
     ApiClient.post_event(MyEvent)
 
