@@ -62,6 +62,18 @@ class TestClientInit(unittest.TestCase):
         self.assertEqual(
             a.eventurl, 'https://example.com/ingest/events/apikey')
 
+    def test_default_agent(self):
+
+        # test default agent string
+        a = netuitive.Client('https://example.com/ingest', 'apikey')
+        self.assertEqual(a.agent, 'Netuitive-Python/' + netuitive.__version__)
+
+    def test_custom_agent(self):
+
+        # test default agent string
+        a = netuitive.Client('https://example.com/ingest', 'apikey', 'phil')
+        self.assertEqual(a.agent, 'phil')
+
     def tearDown(self):
         pass
 
@@ -86,13 +98,46 @@ class TestElementInit(unittest.TestCase):
 class TestElementAttributes(unittest.TestCase):
 
     def setUp(self):
-        pass
+        self.a = netuitive.Element()
+        self.a.add_attribute('Test', 'TestValue')
+        self.a.add_attribute('Test2', 'TestValue2')
 
     def test(self):
-        a = netuitive.Element()
-        a.add_attribute('Test', 'TestValue')
-        self.assertEqual(a.attributes[0].name, 'Test')
-        self.assertEqual(a.attributes[0].value, 'TestValue')
+        self.assertEqual(self.a.attributes[0].name, 'Test')
+        self.assertEqual(self.a.attributes[0].value, 'TestValue')
+        self.assertEqual(self.a.attributes[1].name, 'Test2')
+        self.assertEqual(self.a.attributes[1].value, 'TestValue2')
+
+    def test_post_format(self):
+
+        ajson = json.dumps(
+            [self.a], default=lambda o: o.__dict__, sort_keys=True)
+        j = '[{"attributes": [{"name": "Test", "value": "TestValue"}, {"name": "Test2", "value": "TestValue2"}], "metrics": [], "relationships": [], "samples": [], "tags": [], "type": "SERVER"}]'
+
+        self.assertEqual(ajson, j)
+
+    def tearDown(self):
+        pass
+
+
+class TestElementRelationships(unittest.TestCase):
+
+    def setUp(self):
+        self.a = netuitive.Element()
+        self.a.add_relationship('Test')
+        self.a.add_relationship('Test2')
+
+    def test(self):
+        self.assertEqual(self.a.relationships[0].fqn, 'Test')
+        self.assertEqual(self.a.relationships[1].fqn, 'Test2')
+
+    def test_post_format(self):
+
+        ajson = json.dumps(
+            [self.a], default=lambda o: o.__dict__, sort_keys=True)
+        j = '[{"attributes": [], "metrics": [], "relationships": [{"fqn": "Test"}, {"fqn": "Test2"}], "samples": [], "tags": [], "type": "SERVER"}]'
+
+        self.assertEqual(ajson, j)
 
     def tearDown(self):
         pass
@@ -186,9 +231,6 @@ class TestElementSamples(unittest.TestCase):
     def test_post_format(self):
         a = netuitive.Element()
 
-        # test post format for element
-        a = netuitive.Element()
-
         a.add_sample(
             'nonsparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname')
         a.add_sample(
@@ -202,7 +244,7 @@ class TestElementSamples(unittest.TestCase):
 
         ajson = json.dumps(
             [a], default=lambda o: o.__dict__, sort_keys=True)
-        j = '[{"attributes": [], "id": "hostname", "metrics": [{"id": "nonsparseDataStrategy", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}, {"id": "sparseDataStrategy", "sparseDataStrategy": "ReplaceWithZero", "type": "COUNTER", "unit": ""}, {"id": "unit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": "Bytes"}, {"id": "nonunit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}], "name": "hostname", "samples": [{"metricId": "nonsparseDataStrategy", "timestamp": 1434110794000, "val": 1}, {"metricId": "sparseDataStrategy", "timestamp": 1434110794000, "val": 1}, {"metricId": "unit", "timestamp": 1434110794000, "val": 1}, {"metricId": "nonunit", "timestamp": 1434110794000, "val": 1}], "tags": [], "type": "SERVER"}]'
+        j = '[{"attributes": [], "id": "hostname", "metrics": [{"id": "nonsparseDataStrategy", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}, {"id": "sparseDataStrategy", "sparseDataStrategy": "ReplaceWithZero", "type": "COUNTER", "unit": ""}, {"id": "unit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": "Bytes"}, {"id": "nonunit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}], "name": "hostname", "relationships": [], "samples": [{"metricId": "nonsparseDataStrategy", "timestamp": 1434110794000, "val": 1}, {"metricId": "sparseDataStrategy", "timestamp": 1434110794000, "val": 1}, {"metricId": "unit", "timestamp": 1434110794000, "val": 1}, {"metricId": "nonunit", "timestamp": 1434110794000, "val": 1}], "tags": [], "type": "SERVER"}]'
 
         self.assertEqual(ajson, j)
 

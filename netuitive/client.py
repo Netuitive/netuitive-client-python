@@ -1,6 +1,8 @@
 import logging
 import json
 
+from netuitive import __version__
+
 try:
     import urllib.request as urllib2
 except ImportError:
@@ -22,7 +24,7 @@ class Client(object):
     """
 
     def __init__(self, url='https://api.app.netuitive.com/ingest',
-                 api_key='apikey'):
+                 api_key='apikey', agent='Netuitive-Python/' + __version__):
 
         if url.endswith('/'):
             url = url[:-1]
@@ -31,6 +33,7 @@ class Client(object):
         self.api_key = api_key
         self.dataurl = self.url + '/' + self.api_key
         self.eventurl = self.dataurl.replace('/ingest/', '/ingest/events/', 1)
+        self.agent = agent
 
     # these should probably return true on success
 
@@ -43,7 +46,9 @@ class Client(object):
         payload = json.dumps([element], default=lambda o: o.__dict__)
         logging.debug(payload)
         try:
-            headers = {'Content-Type': 'application/json'}
+
+            headers = {'Content-Type': 'application/json',
+                       'User-Agent': self.agent}
             request = urllib2.Request(
                 self.dataurl, data=payload, headers=headers)
             resp = urllib2.urlopen(request)
@@ -66,7 +71,8 @@ class Client(object):
         payload = json.dumps([event], default=lambda o: o.__dict__)
         logging.debug(payload)
         try:
-            headers = {'Content-Type': 'application/json'}
+            headers = {'Content-Type': 'application/json',
+                       'User-Agent': self.agent}
             request = urllib2.Request(
                 self.eventurl, data=payload, headers=headers)
             resp = urllib2.urlopen(request)
