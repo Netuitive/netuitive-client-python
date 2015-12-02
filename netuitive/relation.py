@@ -1,8 +1,8 @@
 
-class Relationship(object):
+class Relation(object):
 
     """
-        A relationship of other Elements to this Element
+        A child Elements of this Element
 
         :param fqn: FQN of the other Element
         :type name: string

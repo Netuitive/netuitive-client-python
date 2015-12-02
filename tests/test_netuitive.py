@@ -112,7 +112,7 @@ class TestElementAttributes(unittest.TestCase):
 
         ajson = json.dumps(
             [self.a], default=lambda o: o.__dict__, sort_keys=True)
-        j = '[{"attributes": [{"name": "Test", "value": "TestValue"}, {"name": "Test2", "value": "TestValue2"}], "metrics": [], "relationships": [], "samples": [], "tags": [], "type": "SERVER"}]'
+        j = '[{"attributes": [{"name": "Test", "value": "TestValue"}, {"name": "Test2", "value": "TestValue2"}], "metrics": [], "relations": [], "samples": [], "tags": [], "type": "SERVER"}]'
 
         self.assertEqual(ajson, j)
 
@@ -120,22 +120,22 @@ class TestElementAttributes(unittest.TestCase):
         pass
 
 
-class TestElementRelationships(unittest.TestCase):
+class TestElementrelations(unittest.TestCase):
 
     def setUp(self):
         self.a = netuitive.Element()
-        self.a.add_relationship('Test')
-        self.a.add_relationship('Test2')
+        self.a.add_relation('Test')
+        self.a.add_relation('Test2')
 
     def test(self):
-        self.assertEqual(self.a.relationships[0].fqn, 'Test')
-        self.assertEqual(self.a.relationships[1].fqn, 'Test2')
+        self.assertEqual(self.a.relations[0].fqn, 'Test')
+        self.assertEqual(self.a.relations[1].fqn, 'Test2')
 
     def test_post_format(self):
 
         ajson = json.dumps(
             [self.a], default=lambda o: o.__dict__, sort_keys=True)
-        j = '[{"attributes": [], "metrics": [], "relationships": [{"fqn": "Test"}, {"fqn": "Test2"}], "samples": [], "tags": [], "type": "SERVER"}]'
+        j = '[{"attributes": [], "metrics": [], "relations": [{"fqn": "Test"}, {"fqn": "Test2"}], "samples": [], "tags": [], "type": "SERVER"}]'
 
         self.assertEqual(ajson, j)
 
@@ -244,7 +244,7 @@ class TestElementSamples(unittest.TestCase):
 
         ajson = json.dumps(
             [a], default=lambda o: o.__dict__, sort_keys=True)
-        j = '[{"attributes": [], "id": "hostname", "metrics": [{"id": "nonsparseDataStrategy", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}, {"id": "sparseDataStrategy", "sparseDataStrategy": "ReplaceWithZero", "type": "COUNTER", "unit": ""}, {"id": "unit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": "Bytes"}, {"id": "nonunit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}], "name": "hostname", "relationships": [], "samples": [{"metricId": "nonsparseDataStrategy", "timestamp": 1434110794000, "val": 1}, {"metricId": "sparseDataStrategy", "timestamp": 1434110794000, "val": 1}, {"metricId": "unit", "timestamp": 1434110794000, "val": 1}, {"metricId": "nonunit", "timestamp": 1434110794000, "val": 1}], "tags": [], "type": "SERVER"}]'
+        j = '[{"attributes": [], "id": "hostname", "metrics": [{"id": "nonsparseDataStrategy", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}, {"id": "sparseDataStrategy", "sparseDataStrategy": "ReplaceWithZero", "type": "COUNTER", "unit": ""}, {"id": "unit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": "Bytes"}, {"id": "nonunit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}], "name": "hostname", "relations": [], "samples": [{"metricId": "nonsparseDataStrategy", "timestamp": 1434110794000, "val": 1}, {"metricId": "sparseDataStrategy", "timestamp": 1434110794000, "val": 1}, {"metricId": "unit", "timestamp": 1434110794000, "val": 1}, {"metricId": "nonunit", "timestamp": 1434110794000, "val": 1}], "tags": [], "type": "SERVER"}]'
 
         self.assertEqual(ajson, j)
 

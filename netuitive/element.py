@@ -2,7 +2,7 @@ from .attribute import Attribute
 from .metric import Metric
 from .sample import Sample
 from .tag import Tag
-from .relationship import Relationship
+from .relation import Relation
 
 
 class Element(object):
@@ -19,7 +19,7 @@ class Element(object):
         self.type = ElementType
         self.tags = []
         self.attributes = []
-        self.relationships = []
+        self.relations = []
         self.metrics = []
         self.samples = []
 
@@ -33,13 +33,13 @@ class Element(object):
 
         self.attributes.append(Attribute(name, value))
 
-    def add_relationship(self, fqn):
+    def add_relation(self, fqn):
         """
             :param fqn: FQN of the other Element
             :type name: string
         """
 
-        self.relationships.append(Relationship(fqn))
+        self.relations.append(Relation(fqn))
 
     def add_tag(self, name, value):
         """

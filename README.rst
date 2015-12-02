@@ -16,7 +16,7 @@ Features
     * Attributes
     * Tags
     * Metric Samples
-    * Element Relationships
+    * Element relations
 
 * Create a Netuitive Event with the following data
     * Element Name
@@ -44,9 +44,9 @@ Usage
 
 ``MyElement.add_attribute('Language', 'Python')``
 
-###### Add an Element Relationship
+###### Add an Element relation
 
-``MyElement.add_relationship('my_child_element')``
+``MyElement.add_relation('my_child_element')``
 
 
 ###### Add a Tag
@@ -97,7 +97,7 @@ Example
     MyElement.add_attribute('Language', 'Python')
     MyElement.add_attribute('app_version', '7.0')
 
-    MyElement.add_relationship('my_child_element')
+    MyElement.add_relation('my_child_element')
 
     MyElement.add_tag('Production', 'True')
     MyElement.add_tag('app_tier', 'True')
