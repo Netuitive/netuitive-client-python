@@ -3,6 +3,12 @@
 History
 -------
 
+0.0.9 (2015-12-03)
+---------------------
+
+* Add custom client string
+* Add relation support
+
 0.0.8 (2015-10-16)
 ---------------------
 

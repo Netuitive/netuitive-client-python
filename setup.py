@@ -24,8 +24,8 @@ test_requirements = [
 
 setup(
     name='netuitive',
-    version='0.0.8',
-    description="Python Client for Netuitive Cloud.",
+    version='0.0.9',
+    description="Python Client for Netuitive Cloud",
     long_description=readme + '\n\n' + history,
     author="Netuitive",
     author_email='python@netuitive.com',
