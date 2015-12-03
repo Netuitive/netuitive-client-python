@@ -44,6 +44,14 @@ netuitive.metric module
     :undoc-members:
     :show-inheritance:
 
+netuitive.relation module
+-------------------------
+
+.. automodule:: netuitive.relation
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 netuitive.sample module
 -----------------------
 

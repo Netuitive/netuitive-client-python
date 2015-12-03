@@ -18,6 +18,9 @@ To use Netuitive Python Client in a project::
     # Add a Tag
     MyElement.add_tag(('Production', 'True')
 
+    # Add a child Element relation
+    MyElement.add_relation('my_child_hostname')
+
     # Add a Metric Sample
     MyElement.add_sample('cpu.idle', 1432832135, 1, host='my_hostname')
 
