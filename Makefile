@@ -38,7 +38,7 @@ clean-docs:
 	rm -rf docs/_build/*
 
 lint:
-	flake8 netuitive tests
+	flake8 netuitive
 
 test:
 	python setup.py test
