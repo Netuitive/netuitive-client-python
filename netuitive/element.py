@@ -15,13 +15,15 @@ class Element(object):
 
     """
 
-    def __init__(self, ElementType='SERVER'):
+    def __init__(self, ElementType='SERVER', location=None):
         self.type = ElementType
         self.tags = []
         self.attributes = []
         self.relations = []
         self.metrics = []
         self.samples = []
+        if location is not None:
+            self.location = location
 
     def add_attribute(self, name, value):
         """
@@ -51,14 +53,26 @@ class Element(object):
 
         self.tags.append(Tag(name, value))
 
-    def add_sample(self, metricId, timestamp, value,
-                   metricType=None, host=None, sparseDataStrategy='None', unit=''):
+    def add_sample(self,
+                   metricId,
+                   timestamp,
+                   value,
+                   metricType=None,
+                   host=None,
+                   sparseDataStrategy='None',
+                   unit='',
+                   tags=None,
+                   min=None,
+                   max=None,
+                   avg=None,
+                   sum=None,
+                   cnt=None):
         """
             :param metricId: Metric FQN
             :type metricId: string
             :param timestamp: Timestamp for the sample
             :type timestamp: int
-            :param value: Value of the metric
+            :param value: Value of the sample
             :type value: float
             :param metricType: Metric Type
             :type metricType: string
@@ -68,25 +82,64 @@ class Element(object):
             :type sparseDataStrategy: string
             :param unit: Metric Unit type
             :type unit: string
+            :param tags: List of dicts
+            :type tags: list
+            :param min: Minimum of the sample
+            :type min: float
+            :param max: Maximum of the sample
+            :type max: float
+            :param avg: Average of the sample
+            :type avg: float
+            :param sum: Sum of the sample
+            :type sum: float
+            :param cnt: Count of the sample
+            :type cnt: float
+
 
 
         """
 
         self.id = host
         self.name = host
-        metric = Metric(metricId, metricType, sparseDataStrategy, unit)
+
+        if tags is not None:
+            Tags = []
+            for i in tags:
+                for k in i:
+                    Tags.append(Tag(k, i[k]))
+
+        else:
+            Tags = None
 
         if len(self.metrics) > 0:
             t = []
             for m in self.metrics:
                 t.append(m.id)
 
-            if metric.id not in t:
-                self.metrics.append(metric)
+            if metricId not in t:
+                self.metrics.append(
+                    Metric(metricId,
+                           metricType,
+                           sparseDataStrategy,
+                           unit,
+                           Tags))
         else:
-            self.metrics.append(metric)
+            self.metrics.append(
+                Metric(metricId,
+                       metricType,
+                       sparseDataStrategy,
+                       unit,
+                       Tags))
 
-        self.samples.append(Sample(metricId, timestamp * 1000, value))
+        self.samples.append(Sample(metricId,
+                                   timestamp *
+                                   1000,
+                                   value,
+                                   min,
+                                   max,
+                                   avg,
+                                   sum,
+                                   cnt))
 
     def clear_samples(self):
         self.metrics = []

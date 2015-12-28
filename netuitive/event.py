@@ -22,11 +22,26 @@ class Event(object):
         :type source: string
 
         :Example:
-        netuitive.Event('host01', 'INFO', 'test event', 'big old test message', 'INFO', [['tag1',val1],['tag2',val2]],1434110794,'deployment')
+        netuitive.Event('host01',
+                        'INFO',
+                        'test event',
+                        'test message',
+                        'INFO',
+                        [['tag1',val1],['tag2',val2]],
+                        1434110794,
+                        'deployment')
 
     """
 
-    def __init__(self, elementId, eventType, title, message, level, tags=None, timestamp=None, source=None):
+    def __init__(self,
+                 elementId,
+                 eventType,
+                 title,
+                 message,
+                 level,
+                 tags=None,
+                 timestamp=None,
+                 source=None):
 
         self.eventType = eventType.upper()
         self.title = title
@@ -44,7 +59,10 @@ class Event(object):
         else:
             self.timestamp = timestamp * 1000
 
-        if self.eventType == 'INFO' and message is not None and level is not None:
+        if (self.eventType == 'INFO'
+                and message is not None
+                and level is not None):
+
             self.data = EventType(elementId, 'INFO', message, level)
 
 
@@ -65,6 +83,9 @@ class EventType(object):
     def __init__(self, elementId, eventType, message=None, level=None):
         self.elementId = elementId
 
-        if eventType.upper() == 'INFO' and message is not None and level is not None:
+        if (eventType.upper() == 'INFO'
+                and message is not None
+                and level is not None):
+
             self.level = level
             self.message = message

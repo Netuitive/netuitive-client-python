@@ -9,9 +9,40 @@ Tests for `netuitive` module.
 """
 
 import unittest
+import os
 import json
 import time
 import netuitive
+
+try:
+    from cStringIO import StringIO
+
+except ImportError:
+    try:
+        from StringIO import StringIO
+
+    except ImportError:
+        from io import StringIO
+
+
+def getFixtureDirPath():
+    path = os.path.join(
+        os.path.dirname('tests/'),
+        'fixtures')
+    return path
+
+
+def getFixturePath(fixture_name):
+    path = os.path.join(getFixtureDirPath(),
+                        fixture_name)
+    if not os.access(path, os.R_OK):
+        print('Missing Fixture ' + path)
+    return path
+
+
+def getFixture(fixture_name):
+    with open(getFixturePath(fixture_name), 'r') as f:
+        return StringIO(f.read())
 
 
 class TestClientInit(unittest.TestCase):
@@ -91,6 +122,22 @@ class TestElementInit(unittest.TestCase):
         a = netuitive.Element('NOT_SERVER')
         self.assertEqual(a.type, 'NOT_SERVER')
 
+    def test_element_localtion(self):
+        a = netuitive.Element('SERVER', 'here')
+        self.assertEqual(a.location, 'here')
+
+        b = netuitive.Element('SERVER', location='here too')
+        self.assertEqual(b.location, 'here too')
+
+    def test_post_format(self):
+
+        a = netuitive.Element('SERVER', 'here')
+        ajson = json.dumps(
+            [a], default=lambda o: o.__dict__, sort_keys=True)
+
+        self.assertEqual(ajson, getFixture(
+            'TestElementInit.test_post_format').getvalue())
+
     def tearDown(self):
         pass
 
@@ -112,15 +159,15 @@ class TestElementAttributes(unittest.TestCase):
 
         ajson = json.dumps(
             [self.a], default=lambda o: o.__dict__, sort_keys=True)
-        j = '[{"attributes": [{"name": "Test", "value": "TestValue"}, {"name": "Test2", "value": "TestValue2"}], "metrics": [], "relations": [], "samples": [], "tags": [], "type": "SERVER"}]'
 
-        self.assertEqual(ajson, j)
+        self.assertEqual(ajson, getFixture(
+            'TestElementAttributes.test_post_format').getvalue())
 
     def tearDown(self):
         pass
 
 
-class TestElementrelations(unittest.TestCase):
+class TestElementRelations(unittest.TestCase):
 
     def setUp(self):
         self.a = netuitive.Element()
@@ -135,9 +182,9 @@ class TestElementrelations(unittest.TestCase):
 
         ajson = json.dumps(
             [self.a], default=lambda o: o.__dict__, sort_keys=True)
-        j = '[{"attributes": [], "metrics": [], "relations": [{"fqn": "Test"}, {"fqn": "Test2"}], "samples": [], "tags": [], "type": "SERVER"}]'
 
-        self.assertEqual(ajson, j)
+        self.assertEqual(ajson, getFixture(
+            'TestElementRelations.test_post_format').getvalue())
 
     def tearDown(self):
         pass
@@ -174,6 +221,19 @@ class TestElementSamples(unittest.TestCase):
 
         self.assertEqual(a.metrics[0].id, 'metricId')
         self.assertEqual(a.metrics[0].type, 'COUNTER')
+
+    def test_add_sample_with_tags(self):
+        a = netuitive.Element()
+        a.add_sample(
+            'tagged', 1434110794, 1, 'COUNTER', host='hostname', tags=[{'utilization': 'true'}])
+
+        self.assertEqual(a.id, 'hostname')
+        self.assertEqual(a.name, 'hostname')
+
+        self.assertEqual(a.metrics[0].id, 'tagged')
+        self.assertEqual(a.metrics[0].type, 'COUNTER')
+        self.assertEqual(a.metrics[0].tags[0].name, 'utilization')
+        self.assertEqual(a.metrics[0].tags[0].value, 'true')
 
     def test_duplicate_metrics(self):
         a = netuitive.Element()
@@ -228,6 +288,51 @@ class TestElementSamples(unittest.TestCase):
 
         self.assertEqual(a.metrics[1].unit, '')
 
+    def test_with_min(self):
+        a = netuitive.Element()
+
+        a.add_sample(
+            'min', 1434110794, 1, 'COUNTER', host='hostname', min=0)
+
+        self.assertEqual(
+            a.samples[0].min, 0)
+
+    def test_with_max(self):
+        a = netuitive.Element()
+
+        a.add_sample(
+            'max', 1434110794, 1, 'COUNTER', host='hostname', max=100)
+
+        self.assertEqual(
+            a.samples[0].max, 100)
+
+    def test_with_avg(self):
+        a = netuitive.Element()
+
+        a.add_sample(
+            'avg', 1434110794, 1, 'COUNTER', host='hostname', avg=50)
+
+        self.assertEqual(
+            a.samples[0].avg, 50)
+
+    def test_with_sum(self):
+        a = netuitive.Element()
+
+        a.add_sample(
+            'sum', 1434110794, 1, 'COUNTER', host='hostname', sum=2)
+
+        self.assertEqual(
+            a.samples[0].sum, 2)
+
+    def test_with_cnt(self):
+        a = netuitive.Element()
+
+        a.add_sample(
+            'cnt', 1434110794, 1, 'COUNTER', host='hostname', cnt=3)
+
+        self.assertEqual(
+            a.samples[0].cnt, 3)
+
     def test_post_format(self):
         a = netuitive.Element()
 
@@ -242,11 +347,32 @@ class TestElementSamples(unittest.TestCase):
         a.add_sample(
             'nonunit', 1434110794, 1, 'COUNTER', host='hostname')
 
+        a.add_sample(
+            'tagged', 1434110794, 1, 'COUNTER', host='hostname', tags=[{'utilization': 'true'}])
+
+        a.add_sample(
+            'min', 1434110794, 1, 'COUNTER', host='hostname', min=0)
+
+        a.add_sample(
+            'max', 1434110794, 1, 'COUNTER', host='hostname', max=100)
+
+        a.add_sample(
+            'avg', 1434110794, 1, 'COUNTER', host='hostname', avg=50)
+
+        a.add_sample(
+            'sum', 1434110794, 1, 'COUNTER', host='hostname', sum=2)
+
+        a.add_sample(
+            'cnt', 1434110794, 1, 'COUNTER', host='hostname', cnt=3)
+
+        a.add_sample(
+            'min.max.avg.sum.cnt', 1434110794, 1, 'COUNTER', host='hostname', min=0, max=100, avg=50, sum=2, cnt=3)
+
         ajson = json.dumps(
             [a], default=lambda o: o.__dict__, sort_keys=True)
-        j = '[{"attributes": [], "id": "hostname", "metrics": [{"id": "nonsparseDataStrategy", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}, {"id": "sparseDataStrategy", "sparseDataStrategy": "ReplaceWithZero", "type": "COUNTER", "unit": ""}, {"id": "unit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": "Bytes"}, {"id": "nonunit", "sparseDataStrategy": "None", "type": "COUNTER", "unit": ""}], "name": "hostname", "relations": [], "samples": [{"metricId": "nonsparseDataStrategy", "timestamp": 1434110794000, "val": 1}, {"metricId": "sparseDataStrategy", "timestamp": 1434110794000, "val": 1}, {"metricId": "unit", "timestamp": 1434110794000, "val": 1}, {"metricId": "nonunit", "timestamp": 1434110794000, "val": 1}], "tags": [], "type": "SERVER"}]'
 
-        self.assertEqual(ajson, j)
+        self.assertEqual(ajson, getFixture(
+            'TestElementSamples.test_post_format').getvalue())
 
     def tearDown(self):
         pass
@@ -324,26 +450,23 @@ class TestEvent(unittest.TestCase):
         self.assertEqual(data.level, 'INFO')
         self.assertEqual(data.message, 'message')
 
-    def test_post_format(self):
-
+    def test_post_format_everthing(self):
         # test post format for event with all options
 
-        j = '[{"data": {"elementId": "elementId", "level": "INFO", "message": "message"}, "eventType": "INFO", "source": "source", "tags": [{"name": "name0", "value": "value0"}, {"name": "name1", "value": "value1"}], "timestamp": 1434110794000, "title": "title"}]'
+        self.assertEqual(self.everythingjson, getFixture(
+            'TestEvent.test_post_format_everthing').getvalue())
 
-        self.assertEqual(self.everythingjson, j)
-
+    def test_post_format_notags(self):
         # test post format for event without tags
 
-        j = '[{"data": {"elementId": "elementId", "level": "INFO", "message": "message"}, "eventType": "INFO", "source": "source", "timestamp": 1434110794000, "title": "title"}]'
+        self.assertEqual(self.notagsjson, getFixture(
+            'TestEvent.test_post_format_notags').getvalue())
 
-        self.assertEqual(self.notagsjson, j)
-
+    def test_post_format_minimum(self):
         # test post format for event with minimum options
 
-        j = '[{"data": {"elementId": "elementId", "level": "INFO", "message": "message"}, "eventType": "INFO", "timestamp": ' + \
-            str(self.minimum.timestamp) + ', "title": "title"}]'
-
-        self.assertEqual(self.minimumjson, j)
+        self.assertEqual(self.minimumjson, getFixture(
+            'TestEvent.test_post_format_minimum').getvalue().replace('TIMESTAMP_TEMPLATE', str(self.minimum.timestamp)))
 
     def tearDown(self):
         pass

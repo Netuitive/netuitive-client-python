@@ -53,6 +53,7 @@ class Client(object):
                 self.dataurl, data=payload, headers=headers)
             resp = urllib2.urlopen(request)
             logging.debug("Response code: %d", resp.getcode())
+
             resp.close()
 
             return(True)
@@ -78,6 +79,9 @@ class Client(object):
             resp = urllib2.urlopen(request)
             logging.debug("Response code: %d", resp.getcode())
             resp.close()
+
+            # if resp.getcode() != 202:
+            #     raise Exception("Response code: %d", resp.getcode())
 
             return(True)
 

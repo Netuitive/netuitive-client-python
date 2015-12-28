@@ -3,6 +3,16 @@
 History
 -------
 
+0.1.0 (2016-XX-XX)
+---------------------
+
+* Add metric tag support
+* Add min/max/avg/sum/cnt support
+* Add Element location support
+* Test re-factor
+* Increase test coverage
+
+
 0.0.9 (2015-12-03)
 ---------------------
 
