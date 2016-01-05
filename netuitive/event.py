@@ -43,7 +43,7 @@ class Event(object):
                  timestamp=None,
                  source=None):
 
-        self.eventType = eventType.upper()
+        self.type = eventType.upper()
         self.title = title
 
         if source is not None:
@@ -59,7 +59,7 @@ class Event(object):
         else:
             self.timestamp = timestamp * 1000
 
-        if (self.eventType == 'INFO'
+        if (self.type == 'INFO'
                 and message is not None
                 and level is not None):
 
@@ -80,10 +80,10 @@ class EventType(object):
 
     """
 
-    def __init__(self, elementId, eventType, message=None, level=None):
+    def __init__(self, elementId, eventtype, message=None, level=None):
         self.elementId = elementId
 
-        if (eventType.upper() == 'INFO'
+        if (eventtype.upper() == 'INFO'
                 and message is not None
                 and level is not None):
 

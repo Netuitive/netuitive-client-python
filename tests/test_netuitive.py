@@ -403,7 +403,7 @@ class TestEvent(unittest.TestCase):
 
         # test event with all options
 
-        self.assertEqual(self.everything.eventType, 'INFO')
+        self.assertEqual(self.everything.type, 'INFO')
         self.assertEqual(self.everything.title, 'title')
         self.assertEqual(self.everything.timestamp, 1434110794000)
         self.assertEqual(self.everything.tags[0].name, 'name0')
@@ -420,7 +420,7 @@ class TestEvent(unittest.TestCase):
 
         # test event without tags
 
-        self.assertEqual(self.notags.eventType, 'INFO')
+        self.assertEqual(self.notags.type, 'INFO')
         self.assertEqual(self.notags.title, 'title')
         self.assertEqual(self.notags.timestamp, 1434110794000)
         self.assertEqual(hasattr(self.notags, 'tags'), False)
@@ -443,7 +443,7 @@ class TestEvent(unittest.TestCase):
 
         self.assertTrue(shouldbetrue)
         self.assertEqual(self.minimum.title, 'title')
-        self.assertEqual(self.minimum.eventType, 'INFO')
+        self.assertEqual(self.minimum.type, 'INFO')
 
         data = self.minimum.data
         self.assertEqual(data.elementId, 'elementId')

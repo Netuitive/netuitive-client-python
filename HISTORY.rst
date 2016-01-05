@@ -11,6 +11,7 @@ History
 * Add Element location support
 * Test re-factor
 * Increase test coverage
+* Fix for event support
 
 
 0.0.9 (2015-12-03)

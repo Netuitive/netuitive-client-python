@@ -17,7 +17,9 @@ Features
     * Attributes
     * Tags
     * Metric Samples
+    * Element relations
     * Location
+    * Metric Tags
 
 * Create a Netuitive Event with the following data
     * Element Name
