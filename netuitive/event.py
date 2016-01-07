@@ -21,8 +21,7 @@ class Event(object):
         :param source: The source of the event
         :type source: string
 
-        :Example:
-        netuitive.Event('host01',
+        :Example: netuitive.Event('host01',
                         'INFO',
                         'test event',
                         'test message',
