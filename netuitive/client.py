@@ -43,7 +43,8 @@ class Client(object):
             :type element: object
         """
 
-        payload = json.dumps([element], default=lambda o: o.__dict__)
+        payload = json.dumps(
+            [element], default=lambda o: o.__dict__, sort_keys=True)
         logging.debug(payload)
         try:
 
@@ -53,6 +54,7 @@ class Client(object):
                 self.dataurl, data=payload, headers=headers)
             resp = urllib2.urlopen(request)
             logging.debug("Response code: %d", resp.getcode())
+
             resp.close()
 
             return(True)
@@ -68,7 +70,8 @@ class Client(object):
             :type event: object
         """
 
-        payload = json.dumps([event], default=lambda o: o.__dict__)
+        payload = json.dumps(
+            [event], default=lambda o: o.__dict__, sort_keys=True)
         logging.debug(payload)
         try:
             headers = {'Content-Type': 'application/json',
@@ -78,6 +81,9 @@ class Client(object):
             resp = urllib2.urlopen(request)
             logging.debug("Response code: %d", resp.getcode())
             resp.close()
+
+            # if resp.getcode() != 202:
+            #     raise Exception("Response code: %d", resp.getcode())
 
             return(True)
 

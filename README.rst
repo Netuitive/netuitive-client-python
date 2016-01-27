@@ -17,6 +17,8 @@ Features
     * Tags
     * Metric Samples
     * Element relations
+    * Location
+    * Metric Tags
 
 * Create a Netuitive Event with the following data
     * Element Name
@@ -48,7 +50,6 @@ Usage
 
 ``MyElement.add_relation('my_child_element')``
 
-
 ###### Add a Tag
 
 ``MyElement.add_tag('Production', 'True')``
@@ -65,6 +66,13 @@ Usage
 
 ``MyElement.add_sample('app.requests', 1432832135, 1, host='my_hostname', unit='requests/s')``
 
+###### Add a Metric Sample with utilization tag
+
+``MyElement.add_sample('app.requests', 1432832135, 1, host='my_hostname', tags=[{'utilization': 'true'}])``
+
+###### Add a Metric Sample with min/max values
+
+``MyElement.add_sample('app.percent_used', 1432832135, 50, host='my_hostname', unit='percent', min=0, max=100)``
 
 ###### Send the Samples
 
@@ -117,4 +125,4 @@ Example
 Copyright and License
 ---------------------
 
-Copyright 2015 Netuitive, Inc. under [the Apache 2.0 license](LICENSE).
+Copyright 2015-2016 Netuitive, Inc. under [the Apache 2.0 license](LICENSE).
