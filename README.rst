@@ -4,7 +4,7 @@ Netuitive Python Client
 
 |BuildStatus|_
 
-.. |BuildStatus| image:: https://travis-ci.org/Netuitive/netuitive-client-python?branch=master
+.. |BuildStatus| image:: https://travis-ci.org/Netuitive/netuitive-client-python.svg?branch=master
 .. _BuildStatus: https://travis-ci.org/Netuitive/netuitive-client-python
 
 
