@@ -1,6 +1,7 @@
 ===============================
 Netuitive Python Client
 ===============================
+.. |BuildStatus| image:: https://travis-ci.org/Netuitive/netuitive-client-python.svg?branch=master
 
 What is Netuitive monitoring?
 -----------------------------
