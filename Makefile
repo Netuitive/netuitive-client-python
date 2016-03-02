@@ -49,6 +49,10 @@ test-all:
 coverage:
 	coverage run --source netuitive setup.py test
 	coverage report -m
+
+coverage-html:
+	coverage run --source netuitive setup.py test
+	coverage report -m
 	coverage html
 	open htmlcov/index.html
 
