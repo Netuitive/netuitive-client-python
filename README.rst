@@ -97,6 +97,9 @@ Usage
 
 ``ApiClient.post_event(MyEvent)``
 
+###### Check that our local time is set correctly (returns True/False)
+
+``ApiClient.time_insync()``
 
 Example
 -------
@@ -127,6 +130,8 @@ Example
 
     ApiClient.post_event(MyEvent)
 
+    if ApiClient.time_insync():
+        print('we have time sync with the server')
 
 Copyright and License
 ---------------------

@@ -1,5 +1,6 @@
 import logging
 import json
+import time
 
 from netuitive import __version__
 
@@ -34,8 +35,6 @@ class Client(object):
         self.dataurl = self.url + '/' + self.api_key
         self.eventurl = self.dataurl.replace('/ingest/', '/ingest/events/', 1)
         self.agent = agent
-
-    # these should probably return true on success
 
     def post(self, element):
         """
@@ -91,3 +90,29 @@ class Client(object):
             logging.exception(
                 'error posting payload to api ingest endpoint (%s): %s',
                 self.eventurl, e)
+
+    def check_time_offset(self, epoch=None):
+        req = urllib2.Request(self.url)
+        req.get_method = lambda: 'HEAD'
+        resp = urllib2.urlopen(req)
+        rdate = resp.info()['Date']
+
+        if epoch is None:
+            ltime = int(time.mktime(time.gmtime()))
+
+        else:
+            ltime = epoch
+
+        rtime = int(time.mktime(
+            time.strptime(rdate, "%a, %d %b %Y %H:%M:%S %Z")))
+
+        ret = ltime - rtime
+
+        return(ret)
+
+    def time_insync(self):
+        if self.check_time_offset() < 300:
+            return(True)
+
+        else:
+            return(False)
