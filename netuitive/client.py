@@ -78,7 +78,7 @@ class Client(object):
                           'the max is {2} metrics'.format(
                               element.id, metric_count, self.max_metrics))
 
-                logging.error('{0} has the following metrics: {1}'.format(
+                logging.debug('{0} has the following metrics: {1}'.format(
                     element.id,
                     json.dumps(self.element_dict[element.id])))
 
