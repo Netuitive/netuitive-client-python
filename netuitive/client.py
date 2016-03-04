@@ -35,6 +35,8 @@ class Client(object):
         self.dataurl = self.url + '/' + self.api_key
         self.eventurl = self.dataurl.replace('/ingest/', '/ingest/events/', 1)
         self.agent = agent
+        self.max_metrics = 10000
+        self.element_dict = {}
 
     def post(self, element):
         """
@@ -42,21 +44,46 @@ class Client(object):
             :type element: object
         """
 
-        payload = json.dumps(
-            [element], default=lambda o: o.__dict__, sort_keys=True)
-        logging.debug(payload)
         try:
 
-            headers = {'Content-Type': 'application/json',
-                       'User-Agent': self.agent}
-            request = urllib2.Request(
-                self.dataurl, data=payload, headers=headers)
-            resp = urllib2.urlopen(request)
-            logging.debug("Response code: %d", resp.getcode())
+            if element.id not in self.element_dict:
+                self.element_dict[element.id] = []
 
-            resp.close()
+            for m in element.metrics:
+                if m.id not in self.element_dict[element.id]:
+                    self.element_dict[element.id].append(m.id)
 
-            return(True)
+            metric_count = len(self.element_dict[element.id])
+
+            if metric_count <= self.max_metrics:
+
+                payload = json.dumps(
+                    [element], default=lambda o: o.__dict__, sort_keys=True)
+                logging.debug(payload)
+
+                headers = {'Content-Type': 'application/json',
+                           'User-Agent': self.agent}
+                request = urllib2.Request(
+                    self.dataurl, data=payload, headers=headers)
+                resp = urllib2.urlopen(request)
+                logging.debug("Response code: %d", resp.getcode())
+
+                resp.close()
+
+                return(True)
+
+            else:
+
+                errmsg = ('the {0} element has than {1} metrics, '
+                          'the max is {2} metrics'.format(
+                              element.id, metric_count, self.max_metrics))
+
+                logging.error('{0} has the following metrics: {1}'.format(
+                    element.id,
+                    json.dumps(self.element_dict[element.id])))
+
+                logging.error(errmsg)
+                raise Exception(errmsg)
 
         except Exception as e:
             logging.exception(
@@ -80,9 +107,6 @@ class Client(object):
             resp = urllib2.urlopen(request)
             logging.debug("Response code: %d", resp.getcode())
             resp.close()
-
-            # if resp.getcode() != 202:
-            #     raise Exception("Response code: %d", resp.getcode())
 
             return(True)
 
