@@ -74,7 +74,7 @@ class Client(object):
 
             else:
 
-                errmsg = ('the {0} element has more than {1} metrics, '
+                errmsg = ('the {0} element has {1} metrics, '
                           'the max is {2} metrics'.format(
                               element.id, metric_count, self.max_metrics))
 
@@ -135,7 +135,7 @@ class Client(object):
         return(ret)
 
     def time_insync(self):
-        if self.check_time_offset() < 300:
+        if self.check_time_offset() in range(-300, 300):
             return(True)
 
         else:
