@@ -112,9 +112,7 @@ class Element(object):
             Tags = None
 
         if len(self.metrics) > 0:
-            t = []
-            for m in self.metrics:
-                t.append(m.id)
+            t = list(self.metrics)
 
             if metricId not in t:
                 self.metrics.append(
