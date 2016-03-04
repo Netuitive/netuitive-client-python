@@ -74,8 +74,8 @@ class Client(object):
 
             else:
 
-                errmsg = ('the {0} element has {1} metrics, '
-                          'the max is {2} metrics'.format(
+                errmsg = ('the {0} element has {1} metrics. '
+                          'the max is {2} metrics.'.format(
                               element.id, metric_count, self.max_metrics))
 
                 logging.debug('{0} has the following metrics: {1}'.format(
