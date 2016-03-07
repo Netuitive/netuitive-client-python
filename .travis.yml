@@ -19,6 +19,9 @@ install:
     - pip install -r test_requirements.txt
 
 # command to run tests, e.g. python setup.py test
+before_script:
+  - export TZ=America/New_York
+
 script:
     - make lint
     - make test
