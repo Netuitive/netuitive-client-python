@@ -3,6 +3,13 @@
 History
 -------
 
+0.1.1 (2016-03-08)
+---------------------
+
+* Add server time offset check
+* Fix default event time
+
+
 0.1.0 (2016-01-27)
 ---------------------
 
@@ -19,6 +26,7 @@ History
 
 * Add custom client string
 * Add relation support
+
 
 0.0.8 (2015-10-16)
 ---------------------
@@ -46,10 +54,12 @@ History
 
 * Element type is now easier to set
 
+
 0.0.3 (2015-06-01)
 ---------------------
 
 * Fixes for API URL setting
+
 
 0.0.2 (2015-05-28)
 ---------------------
