@@ -54,13 +54,13 @@ class Event(object):
                 self.tags.append(Tag(t[0], t[1]))
 
         if timestamp is None:
-            self.timestamp = int(time.time()) * 1000
+            self.timestamp = int(time.mktime(time.gmtime())) * 1000
         else:
             self.timestamp = timestamp * 1000
 
-        if (self.type == 'INFO'
-                and message is not None
-                and level is not None):
+        if (self.type == 'INFO' and
+                message is not None and
+                level is not None):
 
             self.data = EventType(elementId, 'INFO', message, level)
 
@@ -82,9 +82,9 @@ class EventType(object):
     def __init__(self, elementId, eventtype, message=None, level=None):
         self.elementId = elementId
 
-        if (eventtype.upper() == 'INFO'
-                and message is not None
-                and level is not None):
+        if (eventtype.upper() == 'INFO' and
+                message is not None and
+                level is not None):
 
             self.level = level
             self.message = message

@@ -2,6 +2,12 @@
 Netuitive Python Client
 ===============================
 
+|BuildStatus|_
+
+.. |BuildStatus| image:: https://travis-ci.org/Netuitive/netuitive-client-python.svg?branch=master
+.. _BuildStatus: https://travis-ci.org/Netuitive/netuitive-client-python
+
+
 What is Netuitive monitoring?
 -----------------------------
 Netuitive provides an adaptive monitoring and analytics platform for cloud infrastructure and web applications.
@@ -91,6 +97,9 @@ Usage
 
 ``ApiClient.post_event(MyEvent)``
 
+###### Check that our local time is set correctly (returns True/False)
+
+``ApiClient.time_insync()``
 
 Example
 -------
@@ -121,6 +130,8 @@ Example
 
     ApiClient.post_event(MyEvent)
 
+    if ApiClient.time_insync():
+        print('we have time sync with the server')
 
 Copyright and License
 ---------------------
