@@ -9,6 +9,11 @@ try:
 except ImportError:
     import urllib2
 
+try:
+    from urllib.parse import urlparse
+except ImportError:
+    from urlparse import urlparse
+
 
 class Client(object):
 
@@ -33,6 +38,8 @@ class Client(object):
         self.url = url
         self.api_key = api_key
         self.dataurl = self.url + '/' + self.api_key
+        self.timeurl = '{uri.scheme}://{uri.netloc}/time'.format(
+            uri=urlparse(url))
         self.eventurl = self.dataurl.replace('/ingest/', '/ingest/events/', 1)
         self.agent = agent
         self.max_metrics = 10000
@@ -116,7 +123,7 @@ class Client(object):
                 self.eventurl, e)
 
     def check_time_offset(self, epoch=None):
-        req = urllib2.Request(self.url)
+        req = urllib2.Request(self.timeurl)
         req.get_method = lambda: 'HEAD'
         resp = urllib2.urlopen(req)
         rdate = resp.info()['Date']
