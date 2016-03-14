@@ -53,6 +53,9 @@ class Client(object):
 
         try:
 
+            if element.id is None:
+                raise Exception('element id is not set')
+
             if element.id not in self.element_dict:
                 self.element_dict[element.id] = []
 

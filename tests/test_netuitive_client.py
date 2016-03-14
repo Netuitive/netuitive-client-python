@@ -168,6 +168,23 @@ class TestClientSamplePost(unittest.TestCase):
 
         self.assertEqual(resp, True)
 
+    @mock.patch('netuitive.client.urllib2.urlopen')
+    @mock.patch('netuitive.client.logging')
+    def test_null_element_id(self, mock_logging, mock_post):
+
+        mock_post.return_value = MockResponse(code=202)
+
+        # test infrastructure endpoint url creation
+        a = netuitive.Client(api_key='apikey')
+
+        e = netuitive.Element()
+
+        resp = a.post(e)
+
+        self.assertEqual(None, resp)
+        self.assertEqual(str(mock_logging.exception.call_args_list[0][0][2]),
+                         'element id is not set')
+
     def tearDown(self):
         pass
 

@@ -22,6 +22,9 @@ class Element(object):
         self.relations = []
         self.metrics = []
         self.samples = []
+        self.id = None
+        self.name = None
+
         if location is not None:
             self.location = location
 
@@ -99,8 +102,11 @@ class Element(object):
 
         """
 
-        self.id = host
-        self.name = host
+        if self.id is None and host is not None:
+            self.id = host
+
+        if self.name is None and host is not None:
+            self.name = host
 
         if tags is not None:
             Tags = []
