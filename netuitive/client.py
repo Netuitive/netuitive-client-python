@@ -123,7 +123,8 @@ class Client(object):
                 self.eventurl, e)
 
     def check_time_offset(self, epoch=None):
-        req = urllib2.Request(self.timeurl)
+        req = urllib2.Request(self.timeurl,
+                              headers={'User-Agent': self.agent})
         req.get_method = lambda: 'HEAD'
         resp = urllib2.urlopen(req)
         rdate = resp.info()['Date']
