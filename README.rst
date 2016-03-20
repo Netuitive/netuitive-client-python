@@ -6,7 +6,7 @@ Netuitive Python Client
 
 .. |BuildStatus| image:: https://travis-ci.org/Netuitive/netuitive-client-python.svg?branch=master
 .. _BuildStatus: https://travis-ci.org/Netuitive/netuitive-client-python
-
+.. image:: https://coveralls.io/repos/github/Netuitive/netuitive-client-python/badge.svg?branch=master :target: https://coveralls.io/github/Netuitive/netuitive-client-python?branch=master
 
 What is Netuitive monitoring?
 -----------------------------

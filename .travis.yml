@@ -27,3 +27,5 @@ script:
     - make test
     - make dist
 
+after_success:
+  - coveralls

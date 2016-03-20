@@ -44,3 +44,4 @@ docs/_build
 
 # special
 testclient.py
+.coveralls.yml
