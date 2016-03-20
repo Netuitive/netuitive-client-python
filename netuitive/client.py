@@ -6,12 +6,12 @@ from netuitive import __version__
 
 try:
     import urllib.request as urllib2
-except ImportError:
+except ImportError:  # pragma: no cover
     import urllib2
 
 try:
     from urllib.parse import urlparse
-except ImportError:
+except ImportError:  # pragma: no cover
     from urlparse import urlparse
 
 
