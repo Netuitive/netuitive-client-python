@@ -3,7 +3,7 @@
 History
 -------
 
-0.1.3 (2016-XX-XX)
+0.1.3 (2016-03-21)
 ---------------------
 
 * Add user agent to time offset check
