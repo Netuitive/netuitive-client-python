@@ -6,12 +6,12 @@ from netuitive import __version__
 
 try:
     import urllib.request as urllib2
-except ImportError:
+except ImportError:  # pragma: no cover
     import urllib2
 
 try:
     from urllib.parse import urlparse
-except ImportError:
+except ImportError:  # pragma: no cover
     from urlparse import urlparse
 
 
@@ -52,6 +52,9 @@ class Client(object):
         """
 
         try:
+
+            if element.id is None:
+                raise Exception('element id is not set')
 
             if element.id not in self.element_dict:
                 self.element_dict[element.id] = []
@@ -123,7 +126,8 @@ class Client(object):
                 self.eventurl, e)
 
     def check_time_offset(self, epoch=None):
-        req = urllib2.Request(self.timeurl)
+        req = urllib2.Request(self.timeurl,
+                              headers={'User-Agent': self.agent})
         req.get_method = lambda: 'HEAD'
         resp = urllib2.urlopen(req)
         rdate = resp.info()['Date']

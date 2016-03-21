@@ -3,6 +3,12 @@
 History
 -------
 
+0.1.3 (2016-XX-XX)
+---------------------
+
+* Add user agent to time offset check
+* better handling of null element ids
+
 0.1.2 (2016-03-09)
 ---------------------
 

@@ -28,7 +28,5 @@ script:
     - make dist
 
 after_success:
-    make coverage
-
-
-
+  - make coverage
+  - coveralls
