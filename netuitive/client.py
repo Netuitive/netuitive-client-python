@@ -44,6 +44,8 @@ class Client(object):
         self.agent = agent
         self.max_metrics = 10000
         self.element_dict = {}
+        self.disabled = False
+        self.kill_codes = [410, 418]
 
     def post(self, element):
         """
@@ -52,6 +54,11 @@ class Client(object):
         """
 
         try:
+
+            if self.disabled is True:
+                element.clear_samples()
+                raise Exception('Posting has been disabled. \
+                    See previous errors for details.')
 
             if element.id is None:
                 raise Exception('element id is not set')
@@ -79,6 +86,11 @@ class Client(object):
                 logging.debug("Response code: %d", resp.getcode())
 
                 resp.close()
+
+                if resp.getcode() in self.kill_codes:
+                    self.disabled = True
+                    raise Exception('Posting has been disabled. \
+                    See previous errors for details.')
 
                 return(True)
 
@@ -117,6 +129,11 @@ class Client(object):
             resp = urllib2.urlopen(request)
             logging.debug("Response code: %d", resp.getcode())
             resp.close()
+
+            if resp.getcode() in self.kill_codes:
+                self.disabled = True
+                raise Exception('Posting has been disabled. '
+                                'See previous errors for details.')
 
             return(True)
 

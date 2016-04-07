@@ -3,11 +3,17 @@
 History
 -------
 
+0.1.4 (2016-04-07)
+---------------------
+
+* improve HTTP response error handling
+* Update Development Status to 4 - Beta
+
 0.1.3 (2016-03-21)
 ---------------------
 
 * Add user agent to time offset check
-* better handling of null element ids
+* Better handling of null element ids
 
 0.1.2 (2016-03-09)
 ---------------------

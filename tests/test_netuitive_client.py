@@ -185,6 +185,51 @@ class TestClientSamplePost(unittest.TestCase):
         self.assertEqual(str(mock_logging.exception.call_args_list[0][0][2]),
                          'element id is not set')
 
+    @mock.patch('netuitive.client.urllib2.urlopen')
+    @mock.patch('netuitive.client.logging')
+    def test_kill_switch_410(self, mock_logging, mock_post):
+
+        mock_post.return_value = MockResponse(code=410)
+
+        a = netuitive.Client(api_key='apikey')
+        e = netuitive.Element()
+
+        e.add_sample(
+            'nonsparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname')
+
+        resp = a.post(e)
+        resp2 = a.post(e)
+
+        self.assertNotEqual(resp, True)
+        self.assertNotEqual(resp2, True)
+
+        self.assertTrue(a.disabled)
+
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][
+                         0], 'error posting payload to api ingest endpoint (%s): %s')
+
+    @mock.patch('netuitive.client.urllib2.urlopen')
+    @mock.patch('netuitive.client.logging')
+    def test_kill_switch_418(self, mock_logging, mock_post):
+
+        mock_post.return_value = MockResponse(code=418)
+
+        a = netuitive.Client(api_key='apikey')
+        e = netuitive.Element()
+
+        e.add_sample(
+            'nonsparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname')
+
+        resp = a.post(e)
+        resp2 = a.post(e)
+
+        self.assertNotEqual(resp, True)
+        self.assertNotEqual(resp2, True)
+        self.assertTrue(a.disabled)
+
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][
+                         0], 'error posting payload to api ingest endpoint (%s): %s')
+
     def tearDown(self):
         pass
 
@@ -228,6 +273,46 @@ class TestClientEventPost(unittest.TestCase):
         resp = a.post_event(e)
 
         self.assertNotEqual(resp, True)
+
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][
+                         0], 'error posting payload to api ingest endpoint (%s): %s')
+
+    @mock.patch('netuitive.client.urllib2.urlopen')
+    @mock.patch('netuitive.client.logging')
+    def test_kill_switch_410(self, mock_logging, mock_post):
+
+        mock_post.return_value = MockResponse(code=410)
+
+        # test infrastructure endpoint url creation
+        a = netuitive.Client(api_key='apikey')
+
+        e = netuitive.Event(
+            'test', 'INFO', 'test event', 'big old test message', 'INFO')
+
+        resp = a.post_event(e)
+
+        self.assertNotEqual(resp, True)
+        self.assertTrue(a.disabled)
+
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][
+                         0], 'error posting payload to api ingest endpoint (%s): %s')
+
+    @mock.patch('netuitive.client.urllib2.urlopen')
+    @mock.patch('netuitive.client.logging')
+    def test_kill_switch_418(self, mock_logging, mock_post):
+
+        mock_post.return_value = MockResponse(code=418)
+
+        # test infrastructure endpoint url creation
+        a = netuitive.Client(api_key='apikey')
+
+        e = netuitive.Event(
+            'test', 'INFO', 'test event', 'big old test message', 'INFO')
+
+        resp = a.post_event(e)
+
+        self.assertNotEqual(resp, True)
+        self.assertTrue(a.disabled)
 
         self.assertEqual(mock_logging.exception.call_args_list[0][0][
                          0], 'error posting payload to api ingest endpoint (%s): %s')
