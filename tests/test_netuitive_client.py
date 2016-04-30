@@ -190,6 +190,7 @@ class TestClientSamplePost(unittest.TestCase):
     def test_kill_switch_410(self, mock_logging, mock_post):
 
         mock_post.return_value = MockResponse(code=410)
+        mock_post.side_effect = urllib2.HTTPError(*[None] * 5)
 
         a = netuitive.Client(api_key='apikey')
         e = netuitive.Element()
@@ -213,6 +214,7 @@ class TestClientSamplePost(unittest.TestCase):
     def test_kill_switch_418(self, mock_logging, mock_post):
 
         mock_post.return_value = MockResponse(code=418)
+        mock_post.side_effect = urllib2.HTTPError(*[None] * 5)
 
         a = netuitive.Client(api_key='apikey')
         e = netuitive.Element()
@@ -282,6 +284,7 @@ class TestClientEventPost(unittest.TestCase):
     def test_kill_switch_410(self, mock_logging, mock_post):
 
         mock_post.return_value = MockResponse(code=410)
+        mock_post.side_effect = urllib2.HTTPError(*[None] * 5)
 
         # test infrastructure endpoint url creation
         a = netuitive.Client(api_key='apikey')
@@ -302,6 +305,7 @@ class TestClientEventPost(unittest.TestCase):
     def test_kill_switch_418(self, mock_logging, mock_post):
 
         mock_post.return_value = MockResponse(code=418)
+        mock_post.side_effect = urllib2.HTTPError(*[None] * 5)
 
         # test infrastructure endpoint url creation
         a = netuitive.Client(api_key='apikey')

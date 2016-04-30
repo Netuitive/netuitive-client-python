@@ -57,8 +57,9 @@ class Client(object):
 
             if self.disabled is True:
                 element.clear_samples()
-                raise Exception('Posting has been disabled. \
-                    See previous errors for details.')
+                logging.error('Posting has been disabled. '
+                              'See previous errors for details.')
+                return(False)
 
             if element.id is None:
                 raise Exception('element id is not set')
@@ -87,11 +88,6 @@ class Client(object):
 
                 resp.close()
 
-                if resp.getcode() in self.kill_codes:
-                    self.disabled = True
-                    raise Exception('Posting has been disabled. \
-                    See previous errors for details.')
-
                 return(True)
 
             else:
@@ -107,6 +103,18 @@ class Client(object):
                 logging.error(errmsg)
                 raise Exception(errmsg)
 
+        except urllib2.HTTPError as e:
+            self.disabled = True
+            logging.debug("Response code: %d", e.code)
+
+            if e.code in self.kill_codes:
+                logging.exception('Posting has been disabled.'
+                                  'See previous errors for details.')
+            else:
+                logging.exception(
+                    'error posting payload to api ingest endpoint (%s): %s',
+                    self.eventurl, e)
+
         except Exception as e:
             logging.exception(
                 'error posting payload to api ingest endpoint (%s): %s',
@@ -117,6 +125,11 @@ class Client(object):
             :param event: Event to post to Netuitive
             :type event: object
         """
+
+        if self.disabled is True:
+            logging.error('Posting has been disabled. '
+                          'See previous errors for details.')
+            return(False)
 
         payload = json.dumps(
             [event], default=lambda o: o.__dict__, sort_keys=True)
@@ -130,12 +143,19 @@ class Client(object):
             logging.debug("Response code: %d", resp.getcode())
             resp.close()
 
-            if resp.getcode() in self.kill_codes:
-                self.disabled = True
-                raise Exception('Posting has been disabled. '
-                                'See previous errors for details.')
-
             return(True)
+
+        except urllib2.HTTPError as e:
+            self.disabled = True
+            logging.debug("Response code: %d", e.code)
+
+            if e.code in self.kill_codes:
+                logging.exception('Posting has been disabled.'
+                                  'See previous errors for details.')
+            else:
+                logging.exception(
+                    'error posting payload to api ingest endpoint (%s): %s',
+                    self.eventurl, e)
 
         except Exception as e:
             logging.exception(
