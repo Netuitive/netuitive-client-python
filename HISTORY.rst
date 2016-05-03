@@ -3,7 +3,7 @@
 History
 -------
 
-0.1.5 (2016-XX-XX)
+0.1.5 (2016-05-03)
 ---------------------
 
 * fix the internal version number
