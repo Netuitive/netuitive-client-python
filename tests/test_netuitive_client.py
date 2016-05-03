@@ -108,14 +108,33 @@ class TestClientSamplePost(unittest.TestCase):
 
     @mock.patch('netuitive.client.urllib2.urlopen')
     @mock.patch('netuitive.client.logging')
-    def test_failure_general(self, mock_logging, mock_post):
+    def test_failure_general_http(self, mock_logging, mock_post):
 
         mock_post.return_value = MockResponse(code=500)
-        mock_post.side_effect = urllib2.HTTPError(*[None] * 5)
 
         # test infrastructure endpoint url creation
         a = netuitive.Client(api_key='apikey')
+        mock_post.side_effect = urllib2.HTTPError(a.url, 500, '', {}, None)
+        e = netuitive.Element()
 
+        e.add_sample(
+            'nonsparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname')
+
+        resp = a.post(e)
+
+        self.assertNotEqual(resp, True)
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][
+                         0], 'error posting payload to api ingest endpoint (%s): %s')
+
+    @mock.patch('netuitive.client.urllib2.urlopen')
+    @mock.patch('netuitive.client.logging')
+    def test_failure_general(self, mock_logging, mock_post):
+
+        mock_post.return_value = MockResponse(code=500)
+
+        # test infrastructure endpoint url creation
+        a = netuitive.Client(api_key='apikey')
+        mock_post.side_effect = urllib2.URLError('something')
         e = netuitive.Element()
 
         e.add_sample(
@@ -192,6 +211,8 @@ class TestClientSamplePost(unittest.TestCase):
         mock_post.return_value = MockResponse(code=410)
 
         a = netuitive.Client(api_key='apikey')
+        mock_post.side_effect = urllib2.HTTPError(a.url, 410, '', {}, None)
+
         e = netuitive.Element()
 
         e.add_sample(
@@ -201,20 +222,20 @@ class TestClientSamplePost(unittest.TestCase):
         resp2 = a.post(e)
 
         self.assertNotEqual(resp, True)
-        self.assertNotEqual(resp2, True)
+        self.assertFalse(resp2)
 
         self.assertTrue(a.disabled)
 
         self.assertEqual(mock_logging.exception.call_args_list[0][0][
-                         0], 'error posting payload to api ingest endpoint (%s): %s')
+                         0], 'Posting has been disabled.See previous errors for details.')
 
     @mock.patch('netuitive.client.urllib2.urlopen')
     @mock.patch('netuitive.client.logging')
     def test_kill_switch_418(self, mock_logging, mock_post):
 
         mock_post.return_value = MockResponse(code=418)
-
         a = netuitive.Client(api_key='apikey')
+        mock_post.side_effect = urllib2.HTTPError(a.url, 418, '', {}, None)
         e = netuitive.Element()
 
         e.add_sample(
@@ -224,11 +245,11 @@ class TestClientSamplePost(unittest.TestCase):
         resp2 = a.post(e)
 
         self.assertNotEqual(resp, True)
-        self.assertNotEqual(resp2, True)
+        self.assertFalse(resp2)
         self.assertTrue(a.disabled)
 
         self.assertEqual(mock_logging.exception.call_args_list[0][0][
-                         0], 'error posting payload to api ingest endpoint (%s): %s')
+                         0], 'Posting has been disabled.See previous errors for details.')
 
     def tearDown(self):
         pass
@@ -259,10 +280,28 @@ class TestClientEventPost(unittest.TestCase):
 
     @mock.patch('netuitive.client.urllib2.urlopen')
     @mock.patch('netuitive.client.logging')
-    def test_failure_general(self, mock_logging, mock_post):
+    def test_failure_general_http(self, mock_logging, mock_post):
 
         mock_post.return_value = MockResponse(code=500)
-        mock_post.side_effect = urllib2.HTTPError(*[None] * 5)
+
+        # test infrastructure endpoint url creation
+        a = netuitive.Client(api_key='apikey')
+        mock_post.side_effect = urllib2.HTTPError(a.url, 500, '', {}, None)
+
+        e = netuitive.Event(
+            'test', 'INFO', 'test event', 'big old test message', 'INFO')
+
+        resp = a.post_event(e)
+
+        self.assertNotEqual(resp, True)
+
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][
+                         0], 'error posting payload to api ingest endpoint (%s): %s')
+
+    @mock.patch('netuitive.client.urllib2.urlopen')
+    @mock.patch('netuitive.client.logging')
+    def test_failure_general(self, mock_logging, mock_post):
+        mock_post.side_effect = urllib2.URLError('something')
 
         # test infrastructure endpoint url creation
         a = netuitive.Client(api_key='apikey')
@@ -282,20 +321,21 @@ class TestClientEventPost(unittest.TestCase):
     def test_kill_switch_410(self, mock_logging, mock_post):
 
         mock_post.return_value = MockResponse(code=410)
-
         # test infrastructure endpoint url creation
         a = netuitive.Client(api_key='apikey')
+        mock_post.side_effect = urllib2.HTTPError(a.url, 410, '', {}, None)
 
         e = netuitive.Event(
             'test', 'INFO', 'test event', 'big old test message', 'INFO')
 
         resp = a.post_event(e)
+        resp2 = a.post_event(e)
 
         self.assertNotEqual(resp, True)
+        self.assertFalse(resp2)
         self.assertTrue(a.disabled)
-
         self.assertEqual(mock_logging.exception.call_args_list[0][0][
-                         0], 'error posting payload to api ingest endpoint (%s): %s')
+                         0], 'Posting has been disabled.See previous errors for details.')
 
     @mock.patch('netuitive.client.urllib2.urlopen')
     @mock.patch('netuitive.client.logging')
@@ -305,17 +345,19 @@ class TestClientEventPost(unittest.TestCase):
 
         # test infrastructure endpoint url creation
         a = netuitive.Client(api_key='apikey')
+        mock_post.side_effect = urllib2.HTTPError(a.url, 418, '', {}, None)
 
         e = netuitive.Event(
             'test', 'INFO', 'test event', 'big old test message', 'INFO')
 
         resp = a.post_event(e)
+        resp2 = a.post_event(e)
 
         self.assertNotEqual(resp, True)
+        self.assertFalse(resp2)
         self.assertTrue(a.disabled)
-
         self.assertEqual(mock_logging.exception.call_args_list[0][0][
-                         0], 'error posting payload to api ingest endpoint (%s): %s')
+                         0], 'Posting has been disabled.See previous errors for details.')
 
     def tearDown(self):
         pass

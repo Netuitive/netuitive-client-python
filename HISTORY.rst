@@ -3,6 +3,12 @@
 History
 -------
 
+0.1.5 (2016-05-03)
+---------------------
+
+* fix the internal version number
+* improve handling of http errors
+
 0.1.4 (2016-04-07)
 ---------------------
 
