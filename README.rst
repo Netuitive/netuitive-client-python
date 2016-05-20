@@ -98,7 +98,7 @@ Remove the samples already sent
 Create an Event
 ~~~~~~~~~~~~~~~~
 
-``MyEvent = netuitive.Event(hst, 'INFO', 'test event','big old test message', 'INFO')``
+``MyEvent = netuitive.Event(hst, 'INFO', 'test event','this is a test message', 'INFO')``
 
 Send the Event
 ~~~~~~~~~~~~~~~
