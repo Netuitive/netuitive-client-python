@@ -4,7 +4,7 @@ Netuitive Python Client
 
 |BuildStatus|_
 
-.. |BuildStatus| image:: https://travis-ci.org/Netuitive/netuitive-client-python.svg?branch=master 
+.. |BuildStatus| image:: https://travis-ci.org/Netuitive/netuitive-client-python.svg?branch=master
 .. _BuildStatus: https://travis-ci.org/Netuitive/netuitive-client-python
 .. image:: https://coveralls.io/repos/github/Netuitive/netuitive-client-python/badge.svg?branch=master :target: https://coveralls.io/github/Netuitive/netuitive-client-python?branch=master
 
@@ -116,6 +116,7 @@ The below example sets up the Netuitive Python client, creates an element ("MyEl
 ::
 
     import netuitive
+    import time
 
     ApiClient = netuitive.Client(api_key='aaaa9956110211e594444697f922ec7b')
 
@@ -129,14 +130,15 @@ The below example sets up the Netuitive Python client, creates an element ("MyEl
     MyElement.add_tag('Production', 'True')
     MyElement.add_tag('app_tier', 'True')
 
-    MyElement.add_sample('app.error', 1432832135, 1, host='appserver01')
-    MyElement.add_sample('app.request', 1432832135, 10, host='appserver01')
+    timestamp = int(time.mktime(time.gmtime()))
+    MyElement.add_sample('app.error', timestamp, 1, host='appserver01')
+    MyElement.add_sample('app.request', timestamp, 10, host='appserver01')
 
     ApiClient.post(MyElement)
 
     MyElement.clear_samples()
 
-    MyEvent = netuitive.Event('appserver01', 'INFO', 'test event','big old test message', 'INFO')
+    MyEvent = netuitive.Event('appserver01', 'INFO', 'test event','this is a test message', 'INFO')
 
     ApiClient.post_event(MyEvent)
 
