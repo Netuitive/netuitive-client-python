@@ -251,6 +251,31 @@ class TestClientSamplePost(unittest.TestCase):
         self.assertEqual(mock_logging.exception.call_args_list[0][0][
                          0], 'Posting has been disabled.See previous errors for details.')
 
+    @mock.patch('netuitive.client.urllib2.urlopen')
+    @mock.patch('netuitive.client.logging')
+    def test_not_kill_switch_504(self, mock_logging, mock_post):
+
+        mock_post.return_value = MockResponse(code=504)
+
+        a = netuitive.Client(api_key='apikey')
+        mock_post.side_effect = urllib2.HTTPError(a.url, 504, '', {}, None)
+
+        e = netuitive.Element()
+
+        e.add_sample(
+            'nonsparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname')
+
+        resp = a.post(e)
+        resp2 = a.post(e)
+
+        self.assertNotEqual(resp, True)
+        self.assertFalse(resp2)
+
+        self.assertFalse(a.disabled)
+
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][
+                         0], 'error posting payload to api ingest endpoint (%s): %s')
+
     def tearDown(self):
         pass
 
@@ -358,6 +383,27 @@ class TestClientEventPost(unittest.TestCase):
         self.assertTrue(a.disabled)
         self.assertEqual(mock_logging.exception.call_args_list[0][0][
                          0], 'Posting has been disabled.See previous errors for details.')
+
+    @mock.patch('netuitive.client.urllib2.urlopen')
+    @mock.patch('netuitive.client.logging')
+    def test_not_kill_switch_504(self, mock_logging, mock_post):
+
+        mock_post.return_value = MockResponse(code=504)
+        # test infrastructure endpoint url creation
+        a = netuitive.Client(api_key='apikey')
+        mock_post.side_effect = urllib2.HTTPError(a.url, 504, '', {}, None)
+
+        e = netuitive.Event(
+            'test', 'INFO', 'test event', 'big old test message', 'INFO')
+
+        resp = a.post_event(e)
+        resp2 = a.post_event(e)
+
+        self.assertNotEqual(resp, True)
+        self.assertFalse(resp2)
+        self.assertFalse(a.disabled)
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][
+                         0], 'error posting payload to api ingest endpoint (%s): %s')
 
     def tearDown(self):
         pass
