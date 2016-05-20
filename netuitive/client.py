@@ -104,10 +104,11 @@ class Client(object):
                 raise Exception(errmsg)
 
         except urllib2.HTTPError as e:
-            self.disabled = True
             logging.debug("Response code: %d", e.code)
 
             if e.code in self.kill_codes:
+                self.disabled = True
+
                 logging.exception('Posting has been disabled.'
                                   'See previous errors for details.')
             else:
@@ -146,10 +147,10 @@ class Client(object):
             return(True)
 
         except urllib2.HTTPError as e:
-            self.disabled = True
             logging.debug("Response code: %d", e.code)
 
             if e.code in self.kill_codes:
+                self.disabled = True
                 logging.exception('Posting has been disabled.'
                                   'See previous errors for details.')
             else:
