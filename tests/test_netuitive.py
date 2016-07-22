@@ -333,6 +333,14 @@ class TestElementSamples(unittest.TestCase):
         self.assertEqual(
             a.samples[0].cnt, 3)
 
+    def test_add_sanitize(self):
+        a = netuitive.Element()
+        a.add_sample(
+            'mongo.wiredTiger.cache.eviction$server populating queue,:but not evicting pages', 1434110794, 1, 'COUNTER', host='hostname')
+
+        self.assertEqual(a.metrics[
+                         0].id, 'mongo.wiredTiger.cache.eviction_server_populating_queue__but_not_evicting_pages')
+
     def test_post_format(self):
         a = netuitive.Element()
 

@@ -1,3 +1,5 @@
+import re
+
 from .attribute import Attribute
 from .metric import Metric
 from .sample import Sample
@@ -27,6 +29,14 @@ class Element(object):
 
         if location is not None:
             self.location = location
+
+    def _sanitize(self, s):
+        """
+        Sanitize the name of a metric to remove unwanted chars
+
+        """
+
+        return re.sub('[^a-zA-Z0-9\\._-]', '_', s)
 
     def add_attribute(self, name, value):
         """
@@ -117,25 +127,27 @@ class Element(object):
         else:
             Tags = None
 
+        metricIdSan = self._sanitize(metricId)
+
         if len(self.metrics) > 0:
             t = list(self.metrics)
 
-            if metricId not in t:
+            if metricIdSan not in t:
                 self.metrics.append(
-                    Metric(metricId,
+                    Metric(metricIdSan,
                            metricType,
                            sparseDataStrategy,
                            unit,
                            Tags))
         else:
             self.metrics.append(
-                Metric(metricId,
+                Metric(metricIdSan,
                        metricType,
                        sparseDataStrategy,
                        unit,
                        Tags))
 
-        self.samples.append(Sample(metricId,
+        self.samples.append(Sample(metricIdSan,
                                    timestamp *
                                    1000,
                                    value,
