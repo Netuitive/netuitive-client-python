@@ -2,10 +2,11 @@
 Netuitive Python Client
 ===============================
 
-|BuildStatus|_
+|BuildStatus|_ |CoverageStatus|_
 
 .. |BuildStatus| image:: https://travis-ci.org/Netuitive/netuitive-client-python.svg?branch=master
 .. _BuildStatus: https://travis-ci.org/Netuitive/netuitive-client-python
+
 .. |CoverageStatus| image:: https://coveralls.io/repos/github/Netuitive/netuitive-client-python/badge.svg?branch=master
 .. _CoverageStatus: https://coveralls.io/github/Netuitive/netuitive-client-python?branch=master
 
