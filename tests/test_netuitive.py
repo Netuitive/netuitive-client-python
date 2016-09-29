@@ -13,6 +13,7 @@ import os
 import json
 import time
 import netuitive
+import datetime
 
 try:
     from cStringIO import StringIO
@@ -376,11 +377,39 @@ class TestElementSamples(unittest.TestCase):
         a.add_sample(
             'min.max.avg.sum.cnt', 1434110794, 1, 'COUNTER', host='hostname', min=0, max=100, avg=50, sum=2, cnt=3)
 
+        a.add_sample(
+            'cnt2', 1475158966202, 1, 'COUNTER', host='hostname', cnt=3, ts_is_ms=True)
+
         ajson = json.dumps(
             [a], default=lambda o: o.__dict__, sort_keys=True)
 
         self.assertEqual(ajson, getFixture(
             'TestElementSamples.test_post_format').getvalue())
+
+    def test_add_sample_ms(self):
+        a = netuitive.Element()
+        a.add_sample(
+            'metricId', 1475158966202, 1, 'COUNTER', host='hostname', ts_is_ms=True)
+
+        self.assertEqual(a.samples[0].timestamp, 1475158966202)
+
+    def test_add_sample_no_timestamp(self):
+        a = netuitive.Element()
+        c = datetime.datetime.utcnow() - datetime.datetime(1970, 1, 1)
+        d = c.microseconds + (c.seconds + c.days * 86400) * 10**3
+
+        a.add_sample(
+            'metricId', None, 1, 'COUNTER', host='hostname')
+
+        e = a.samples[0].timestamp - d
+
+        shouldbetrue = False
+
+        # minimum.timstamp has to be within the 10 second
+        if 10000 > e:
+            shouldbetrue = True
+
+        self.assertTrue(shouldbetrue)
 
     def tearDown(self):
         pass

@@ -1,10 +1,12 @@
 import re
+import datetime
 
 from .attribute import Attribute
 from .metric import Metric
 from .sample import Sample
 from .tag import Tag
 from .relation import Relation
+from .util import to_ms_timestamp_int
 
 
 class Element(object):
@@ -79,7 +81,8 @@ class Element(object):
                    max=None,
                    avg=None,
                    sum=None,
-                   cnt=None):
+                   cnt=None,
+                   ts_is_ms=False):
         """
             :param metricId: Metric FQN
             :type metricId: string
@@ -107,6 +110,8 @@ class Element(object):
             :type sum: float
             :param cnt: Count of the sample
             :type cnt: float
+            :param ts_is_ms: Is the timestamp in milliseconds
+            :type ts_is_ms: bool
 
 
 
@@ -147,9 +152,17 @@ class Element(object):
                        unit,
                        Tags))
 
+        if timestamp is None:
+            ts = to_ms_timestamp_int(datetime.datetime.utcnow())
+
+        else:
+            if ts_is_ms:
+                ts = int(timestamp)
+            else:
+                ts = int(timestamp * 1000)
+
         self.samples.append(Sample(metricIdSan,
-                                   timestamp *
-                                   1000,
+                                   ts,
                                    value,
                                    min,
                                    max,
