@@ -114,7 +114,7 @@ class Client(object):
             else:
                 logging.exception(
                     'error posting payload to api ingest endpoint (%s): %s',
-                    self.eventurl, e)
+                    self.dataurl, e)
 
         except Exception as e:
             logging.exception(
