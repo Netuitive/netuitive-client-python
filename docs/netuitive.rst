@@ -68,6 +68,14 @@ netuitive.tag module
     :undoc-members:
     :show-inheritance:
 
+netuitive.util module
+---------------------
+
+.. automodule:: netuitive.util
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
