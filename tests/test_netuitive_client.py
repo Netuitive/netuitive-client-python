@@ -128,6 +128,37 @@ class TestClientSamplePost(unittest.TestCase):
 
     @mock.patch('netuitive.client.urllib2.urlopen')
     @mock.patch('netuitive.client.logging')
+    def test_repeat_failure_general_http(self, mock_logging, mock_post):
+
+        a = netuitive.Client(api_key='apikey')
+
+        e = netuitive.Element()
+
+        e.add_sample(
+            'nonsparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname')
+
+        errs = [403, 429, 503, 404, 503, 204, 307, 302, 405, 413]
+
+        for i in range(a.max_post_errors):
+            mock_post.return_value = MockResponse(code=errs[i])
+            mock_post.side_effect = urllib2.HTTPError(
+                a.url, errs[i], '', {}, None)
+
+            resp = a.post(e)
+
+        resp = a.post(e)
+        self.assertNotEqual(resp, True)
+        self.assertFalse(resp)
+
+        self.assertFalse(a.disabled)
+
+        self.assertEqual(len(e.samples), 0)
+
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][
+                         0], 'error posting payload to api ingest endpoint (%s): %s')
+
+    @mock.patch('netuitive.client.urllib2.urlopen')
+    @mock.patch('netuitive.client.logging')
     def test_failure_general(self, mock_logging, mock_post):
 
         mock_post.return_value = MockResponse(code=500)

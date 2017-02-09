@@ -46,6 +46,8 @@ class Client(object):
         self.element_dict = {}
         self.disabled = False
         self.kill_codes = [410, 418]
+        self.post_error_count = 0
+        self.max_post_errors = 10
 
     def post(self, element):
         """
@@ -88,6 +90,8 @@ class Client(object):
 
                 resp.close()
 
+                self.post_error_count = 0
+
                 return(True)
 
             else:
@@ -112,11 +116,19 @@ class Client(object):
                 logging.exception('Posting has been disabled.'
                                   'See previous errors for details.')
             else:
+                self.post_error_count += 1
+                if self.post_error_count > self.max_post_errors:
+                    element.clear_samples()
+
                 logging.exception(
                     'error posting payload to api ingest endpoint (%s): %s',
                     self.dataurl, e)
 
         except Exception as e:
+            self.post_error_count += 1
+            if self.post_error_count > self.max_post_errors:
+                element.clear_samples()  # pragma: no cover
+
             logging.exception(
                 'error posting payload to api ingest endpoint (%s): %s',
                 self.dataurl, e)
