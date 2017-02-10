@@ -528,7 +528,10 @@ class TestClientTimeOffset(unittest.TestCase):
 
         resp = a.check_time_offset(1456768643)
 
-        self.assertEqual(1456750643, resp)
+        rtime = int(time.mktime(
+            time.strptime(resp_headers['Date'], "%a, %d %b %Y %H:%M:%S %Z")))
+
+        self.assertEqual(1456768643 - rtime, resp)
 
     def tearDown(self):
         pass
