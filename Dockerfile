@@ -19,6 +19,6 @@ RUN python setup.py install
 RUN ln -sf /usr/share/zoneinfo/UTC  /etc/localtime
 
 ENV API_URL https://api.app.netuitive.com/ingest
-ENV CUSTOM_API_KEY change-me
+ENV CUSTOM_API_KEY change-me-apikey
 
 CMD python example/example.py
