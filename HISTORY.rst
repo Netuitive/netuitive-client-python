@@ -3,6 +3,14 @@
 History
 -------
 
+0.2.3 (2017-02-14)
+---------------------
+
+* test_check_time_offset should not be timezone sensitive
+* add Example Script Dockerfile
+* Handle 403 and other HTTP errors better
+
+
 0.2.2 (2016-09-30)
 ---------------------
 

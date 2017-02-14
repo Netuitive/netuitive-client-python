@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 __author__ = 'Netuitive, Inc'
-__version__ = '0.2.2'
+__version__ = '0.2.3'
 
 from .client import Client  # nopep8 # flake8: noqa
 from .element import Element  # nopep8 # flake8: noqa
