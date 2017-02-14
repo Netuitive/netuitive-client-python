@@ -112,40 +112,18 @@ Check that our local time is set correctly (returns True/False)
 
 ``ApiClient.time_insync()``
 
-Example
+Docker Example
 ----------
-The below example sets up the Netuitive Python client, creates an element ("MyElement") with attributes, a relationship, and tags and then passes in some samples. After the element is posted, the samples are cleared, an event is created and posted.
+Included in this project is an example python script (`example/example.py`) which can be built and run within a Docker container. To send test data into your Netuitive environment run the following:
+
 ::
 
-    import netuitive
-    import time
+    docker build -t netuitive-client-python .
+    docker run -e CUSTOM_API_KEY=<custom-api-key> netuitive-client-python
 
-    ApiClient = netuitive.Client(api_key='aaaa9956110211e594444697f922ec7b')
+::
 
-    MyElement = netuitive.Element()
-
-    MyElement.add_attribute('Language', 'Python')
-    MyElement.add_attribute('app_version', '7.0')
-
-    MyElement.add_relation('my_child_element')
-
-    MyElement.add_tag('Production', 'True')
-    MyElement.add_tag('app_tier', 'True')
-
-    timestamp = int(time.mktime(time.gmtime()))
-    MyElement.add_sample('app.error', timestamp, 1, host='appserver01')
-    MyElement.add_sample('app.request', timestamp, 10, host='appserver01')
-
-    ApiClient.post(MyElement)
-
-    MyElement.clear_samples()
-
-    MyEvent = netuitive.Event('appserver01', 'INFO', 'test event','this is a test message', 'INFO')
-
-    ApiClient.post_event(MyEvent)
-
-    if ApiClient.time_insync():
-        print('we have time sync with the server')
+Make sure to use your **Custom** Netuitive datasource API key.
 
 Copyright and License
 ---------------------
