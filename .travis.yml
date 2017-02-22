@@ -30,3 +30,12 @@ script:
 after_success:
   - make coverage
   - coveralls
+deploy:
+  provider: pypi
+  user: netuitive
+  password:
+    secure: QrivuUGSznm01ZniDcJ51hLIEM9pKkArxhQEljpYCABklqh0IneTyGQn7yQP0x+kaGOjD6RtkxFgfNg8HKCikw/KSVAU9kH07Qu5HVeECTdPf5dx5Y7xG9njzo0M8AuZwrQWLhlH2JUhYTx1P8NVye46SEpSt79Q3zx/TC0dbdLKTbznLN5DjUoYJz++FNQ3+Dh1E8k9McUc2Pjtbq3oMamuFylkDOh+4DEpx17WsRH/IMNAaLCfYHh+TjByBs+QahKPPKiYI3rGx1fr4su9LWq6e5bk8Yi36XVeLBp+CdoqRsTgXsH2OthGqvqpHopchaibenuw9EGx8BaAUCdhanolZ6jH+YeUwCjMW0ypF5WV3Jw4TmOYxpWtxPZ+yJN7MewaNW0HVyuJ75qhHFOWI+xzNTk2fk1dsG4Ed+t9Xfa79eEpTrProtnRUAIDHCp4iT6OYv1js2+rrG7M+f2oKxrFsYf/m5IQjzZDT2NLCf+hKsLdnce1XckklUKM4QbLgcDBY2JOXRkGEhxAgQ9VE78BO/RLZ6bBkv4xu+Rwt5dVPUkniwhQmRTx3GY4uzQAYlFaJ9lh5JV4BIXYWscRf791TSEWH5qfoGTkCEqz8mJ6ExpGzmYo9SbNS/rkEy8VxUHk08luSr1QkpatFHYF0TfrYplBtTKFnMs4PTAUIXg=
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: Netuitive/netuitive-client-python
