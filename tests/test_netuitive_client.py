@@ -32,7 +32,6 @@ try:
 except ImportError:
     import urllib2
 
-
 def getFixtureDirPath():
     path = os.path.join(
         os.path.dirname('tests/'),
@@ -176,47 +175,6 @@ class TestClientSamplePost(unittest.TestCase):
         self.assertNotEqual(resp, True)
         self.assertEqual(mock_logging.exception.call_args_list[0][0][
                          0], 'error posting payload to api ingest endpoint (%s): %s')
-
-    @mock.patch('netuitive.client.urllib2.urlopen')
-    @mock.patch('netuitive.client.logging')
-    def test_too_many_metrics(self, mock_logging, mock_post):
-
-        mock_post.return_value = MockResponse(code=202)
-        # test infrastructure endpoint url creation
-        a = netuitive.Client(api_key='apikey')
-        a.max_metrics = 100
-
-        e = netuitive.Element()
-
-        for i in range(101):
-            e.add_sample(
-                'metric-' + str(i), 1434110794, 1, 'COUNTER', host='hostname')
-
-        resp = a.post(e)
-
-        self.assertNotEqual(resp, True)
-
-        self.assertEqual(mock_logging.exception.call_args_list[0][0][
-                         0], 'error posting payload to api ingest endpoint (%s): %s')
-
-    @mock.patch('netuitive.client.urllib2.urlopen')
-    def test_just_enough_metrics(self, mock_post):
-
-        mock_post.return_value = MockResponse(code=202)
-        # test infrastructure endpoint url creation
-        a = netuitive.Client(api_key='apikey')
-        a.max_metrics = 100
-
-        e = netuitive.Element()
-
-        e.clear_samples()
-        for i in range(100):
-            e.add_sample(
-                'metric-' + str(i), 1434110794, 1, 'COUNTER', host='hostname')
-
-        resp = a.post(e)
-
-        self.assertEqual(resp, True)
 
     @mock.patch('netuitive.client.urllib2.urlopen')
     @mock.patch('netuitive.client.logging')
