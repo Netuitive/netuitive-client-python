@@ -42,8 +42,6 @@ class Client(object):
             uri=urlparse(url))
         self.eventurl = self.dataurl.replace('/ingest/', '/ingest/events/', 1)
         self.agent = agent
-        self.max_metrics = 10000
-        self.element_dict = {}
         self.disabled = False
         self.kill_codes = [410, 418]
         self.post_error_count = 0
@@ -66,46 +64,22 @@ class Client(object):
             if element.id is None:
                 raise Exception('element id is not set')
 
-            if element.id not in self.element_dict:
-                self.element_dict[element.id] = []
+            payload = json.dumps(
+                [element], default=lambda o: o.__dict__, sort_keys=True)
+            logging.debug(payload)
 
-            for m in element.metrics:
-                if m.id not in self.element_dict[element.id]:
-                    self.element_dict[element.id].append(m.id)
+            headers = {'Content-Type': 'application/json',
+                       'User-Agent': self.agent}
+            request = urllib2.Request(
+                self.dataurl, data=payload, headers=headers)
+            resp = urllib2.urlopen(request)
+            logging.debug("Response code: %d", resp.getcode())
 
-            metric_count = len(self.element_dict[element.id])
+            resp.close()
 
-            if metric_count <= self.max_metrics:
+            self.post_error_count = 0
 
-                payload = json.dumps(
-                    [element], default=lambda o: o.__dict__, sort_keys=True)
-                logging.debug(payload)
-
-                headers = {'Content-Type': 'application/json',
-                           'User-Agent': self.agent}
-                request = urllib2.Request(
-                    self.dataurl, data=payload, headers=headers)
-                resp = urllib2.urlopen(request)
-                logging.debug("Response code: %d", resp.getcode())
-
-                resp.close()
-
-                self.post_error_count = 0
-
-                return(True)
-
-            else:
-
-                errmsg = ('the {0} element has {1} metrics. '
-                          'the max is {2} metrics.'.format(
-                              element.id, metric_count, self.max_metrics))
-
-                logging.debug('{0} has the following metrics: {1}'.format(
-                    element.id,
-                    json.dumps(self.element_dict[element.id])))
-
-                logging.error(errmsg)
-                raise Exception(errmsg)
+            return(True)
 
         except urllib2.HTTPError as e:
             logging.debug("Response code: %d", e.code)
