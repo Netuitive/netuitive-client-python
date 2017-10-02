@@ -41,6 +41,7 @@ class Client(object):
         self.timeurl = '{uri.scheme}://{uri.netloc}/time'.format(
             uri=urlparse(url))
         self.eventurl = self.dataurl.replace('/ingest/', '/ingest/events/', 1)
+        self.checkurl = self.dataurl.replace('/ingest/', '/check/', 1)
         self.agent = agent
         self.disabled = False
         self.kill_codes = [410, 418]
@@ -148,6 +149,45 @@ class Client(object):
             logging.exception(
                 'error posting payload to api ingest endpoint (%s): %s',
                 self.eventurl, e)
+
+    def post_check(self, check):
+        """
+            :param check: Check to post to Metricly
+            :type check: object
+        """
+
+        if self.disabled is True:
+            logging.error('Posting has been disabled. '
+                          'See previous errors for details.')
+            return(False)
+
+        url = self.checkurl + '/' + check.name + '/' + check.elementId + '/' + str(check.interval)
+        try:
+            headers = {'User-Agent': self.agent}
+            request = urllib2.Request(
+                url, data='', headers=headers)
+            resp = urllib2.urlopen(request)
+            logging.debug("Response code: %d", resp.getcode())
+            resp.close()
+
+            return(True)
+
+        except urllib2.HTTPError as e:
+            logging.debug("Response code: %d", e.code)
+
+            if e.code in self.kill_codes:
+                self.disabled = True
+                logging.exception('Posting has been disabled.'
+                                  'See previous errors for details.')
+            else:
+                logging.exception(
+                    'error posting payload to api ingest endpoint (%s): %s',
+                    url, e)
+
+        except Exception as e:
+            logging.exception(
+                'error posting payload to api ingest endpoint (%s): %s',
+                url, e)
 
     def check_time_offset(self, epoch=None):
         req = urllib2.Request(self.timeurl,
