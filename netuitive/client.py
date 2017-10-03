@@ -161,7 +161,10 @@ class Client(object):
                           'See previous errors for details.')
             return(False)
 
-        url = self.checkurl + '/' + check.name + '/' + check.elementId + '/' + str(check.interval)
+        url = self.checkurl + '/' \
+            + check.name + '/' \
+            + check.elementId + '/' \
+            + str(check.interval)
         try:
             headers = {'User-Agent': self.agent}
             request = urllib2.Request(
