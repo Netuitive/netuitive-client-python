@@ -26,5 +26,9 @@ MyEvent = netuitive.Event('appserver01', 'INFO', 'test event','this is a test me
 
 ApiClient.post_event(MyEvent)
 
+MyCheck = netuitive.Check('heartbeat', 'element', 60)
+
+ApiClient.post_check(MyCheck)
+
 if ApiClient.time_insync():
     print('we have time sync with the server')
