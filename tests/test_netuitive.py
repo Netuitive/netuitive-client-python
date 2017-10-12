@@ -509,5 +509,20 @@ class TestEvent(unittest.TestCase):
         pass
 
 
+class TestCheck(unittest.TestCase):
+
+    def setUp(self):
+        self.check = netuitive.Check('checkName', 'elementId', 60)
+
+    def test_check(self):
+
+        self.assertEqual(self.check.name, 'checkName')
+        self.assertEqual(self.check.elementId, 'elementId')
+        self.assertEqual(self.check.interval, 60)
+
+    def tearDown(self):
+        pass
+
+
 if __name__ == '__main__':
     unittest.main()
