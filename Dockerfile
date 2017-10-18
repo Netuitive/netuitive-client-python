@@ -13,6 +13,7 @@ RUN pip install -r /opt/app/test_requirements.txt
 
 ADD . /opt/app/
 
+RUN flake8 netuitive
 RUN python setup.py test
 RUN python setup.py install
 
