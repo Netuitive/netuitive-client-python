@@ -14,7 +14,7 @@ MyElement.add_relation('my_child_element')
 MyElement.add_tag('Production', 'True')
 MyElement.add_tag('app_tier', 'True')
 
-timestamp = int(time.mktime(time.gmtime()))
+timestamp = int(time.mktime(time.localtime()))
 MyElement.add_sample('app.error', timestamp, 1, host='appserver01')
 MyElement.add_sample('app.request', timestamp, 10, host='appserver01')
 
@@ -25,6 +25,10 @@ MyElement.clear_samples()
 MyEvent = netuitive.Event('appserver01', 'INFO', 'test event','this is a test message', 'INFO')
 
 ApiClient.post_event(MyEvent)
+
+MyCheck = netuitive.Check('heartbeat', 'element', 60)
+
+ApiClient.post_check(MyCheck)
 
 if ApiClient.time_insync():
     print('we have time sync with the server')
