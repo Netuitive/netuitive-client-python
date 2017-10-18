@@ -41,7 +41,8 @@ class Client(object):
         self.timeurl = '{uri.scheme}://{uri.netloc}/time'.format(
             uri=urlparse(url))
         self.eventurl = self.dataurl.replace('/ingest/', '/ingest/events/', 1)
-        self.checkurl = self.dataurl.replace('/ingest/', '/check/', 1)
+        self.checkurl = self.dataurl.replace('/ingest/', '/check/', 1) \
+            .replace('/infrastructure', '', 1)
         self.agent = agent
         self.disabled = False
         self.kill_codes = [410, 418]
