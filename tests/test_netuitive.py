@@ -518,7 +518,7 @@ class TestCheck(unittest.TestCase):
 
         self.assertEqual(self.check.name, 'checkName')
         self.assertEqual(self.check.elementId, 'elementId')
-        self.assertEqual(self.check.interval, 60)
+        self.assertEqual(self.check.ttl, 60)
 
     def tearDown(self):
         pass

@@ -165,7 +165,7 @@ class Client(object):
         url = self.checkurl + '/' \
             + check.name + '/' \
             + check.elementId + '/' \
-            + str(check.interval)
+            + str(check.ttl)
         try:
             headers = {'User-Agent': self.agent}
             request = urllib2.Request(
