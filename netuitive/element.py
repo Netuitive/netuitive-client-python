@@ -42,7 +42,8 @@ class Element(object):
 
     def merge_metrics(self):
         """
-        Merge metrics in the internal _metrics dict to metrics list and delete the internal _metrics
+        Merge metrics in the internal _metrics dict to metrics list
+        and delete the internal _metrics
         """
 
         self.metrics.extend(self._metrics.values())
@@ -146,7 +147,11 @@ class Element(object):
             self._metrics = {}
 
         if self._metrics.get(metricIdSan) is None:
-            self._metrics[metricIdSan] = Metric(metricIdSan, metricType, sparseDataStrategy, unit, Tags)
+            self._metrics[metricIdSan] = Metric(metricIdSan,
+                                                metricType,
+                                                sparseDataStrategy,
+                                                unit,
+                                                Tags)
 
         if timestamp is None:
             ts = to_ms_timestamp_int(datetime.datetime.utcnow())
