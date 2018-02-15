@@ -66,6 +66,7 @@ class Client(object):
             if element.id is None:
                 raise Exception('element id is not set')
 
+            element.merge_metrics()
             payload = json.dumps(
                 [element], default=lambda o: o.__dict__, sort_keys=True)
             logging.debug(payload)
