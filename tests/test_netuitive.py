@@ -133,6 +133,7 @@ class TestElementInit(unittest.TestCase):
     def test_post_format(self):
 
         a = netuitive.Element('SERVER', 'here')
+        a.merge_metrics()
         ajson = json.dumps(
             [a], default=lambda o: o.__dict__, sort_keys=True)
 
@@ -157,7 +158,7 @@ class TestElementAttributes(unittest.TestCase):
         self.assertEqual(self.a.attributes[1].value, 'TestValue2')
 
     def test_post_format(self):
-
+        self.a.merge_metrics()
         ajson = json.dumps(
             [self.a], default=lambda o: o.__dict__, sort_keys=True)
 
@@ -180,7 +181,7 @@ class TestElementRelations(unittest.TestCase):
         self.assertEqual(self.a.relations[1].fqn, 'Test2')
 
     def test_post_format(self):
-
+        self.a.merge_metrics()
         ajson = json.dumps(
             [self.a], default=lambda o: o.__dict__, sort_keys=True)
 
@@ -220,8 +221,8 @@ class TestElementSamples(unittest.TestCase):
         self.assertEqual(a.id, 'hostname')
         self.assertEqual(a.name, 'hostname')
 
-        self.assertEqual(a.metrics[0].id, 'metricId')
-        self.assertEqual(a.metrics[0].type, 'COUNTER')
+        self.assertEqual(a._metrics['metricId'].id, 'metricId')
+        self.assertEqual(a._metrics['metricId'].type, 'COUNTER')
 
     def test_add_sample_with_tags(self):
         a = netuitive.Element()
@@ -231,32 +232,40 @@ class TestElementSamples(unittest.TestCase):
         self.assertEqual(a.id, 'hostname')
         self.assertEqual(a.name, 'hostname')
 
-        self.assertEqual(a.metrics[0].id, 'tagged')
-        self.assertEqual(a.metrics[0].type, 'COUNTER')
-        self.assertEqual(a.metrics[0].tags[0].name, 'utilization')
-        self.assertEqual(a.metrics[0].tags[0].value, 'true')
+        self.assertEqual(a._metrics['tagged'].id, 'tagged')
+        self.assertEqual(a._metrics['tagged'].type, 'COUNTER')
+        self.assertEqual(a._metrics['tagged'].tags[0].name, 'utilization')
+        self.assertEqual(a._metrics['tagged'].tags[0].value, 'true')
 
     def test_duplicate_metrics(self):
         a = netuitive.Element()
 
         a.add_sample(
             'metricId', 1434110794, 1, 'COUNTER', host='hostname')
+        a.add_sample(
+            'metricId', 1434110795, 2, 'COUNTER', host='hostname')
 
         # don't allow duplicate metrics
-        self.assertEqual(len(a.metrics), 1)
+        self.assertEqual(len(a._metrics), 1)
+        self.assertEqual(a._metrics['metricId'].id, 'metricId')
+        self.assertEqual(a._metrics['metricId'].type, 'COUNTER')
 
         self.assertEqual(a.samples[0].metricId, 'metricId')
         self.assertEqual(a.samples[0].timestamp, 1434110794000)
         self.assertEqual(a.samples[0].val, 1)
+        self.assertEqual(a.samples[1].metricId, 'metricId')
+        self.assertEqual(a.samples[1].timestamp, 1434110795000)
+        self.assertEqual(a.samples[1].val, 2)
 
     def test_clear_samples(self):
         a = netuitive.Element()
         a.add_sample(
             'metricId', 1434110794, 1, 'COUNTER', host='hostname')
         # test clear_samples
-        self.assertEqual(len(a.metrics), 1)
+        self.assertEqual(len(a._metrics), 1)
         a.clear_samples()
         self.assertEqual(len(a.metrics), 0)
+        self.assertEqual(len(a._metrics), 0)
         self.assertEqual(len(a.samples), 0)
 
     def test_with_sparseDataStrategy(self):
@@ -268,9 +277,8 @@ class TestElementSamples(unittest.TestCase):
         a.add_sample(
             'sparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname', sparseDataStrategy='ReplaceWithZero')
 
-        self.assertEqual(a.metrics[0].sparseDataStrategy, 'None')
-        self.assertEqual(
-            a.metrics[1].sparseDataStrategy, 'ReplaceWithZero')
+        self.assertEqual(a._metrics['nonsparseDataStrategy'].sparseDataStrategy, 'None')
+        self.assertEqual(a._metrics['sparseDataStrategy'].sparseDataStrategy, 'ReplaceWithZero')
 
         a.clear_samples()
 
@@ -284,10 +292,9 @@ class TestElementSamples(unittest.TestCase):
         a.add_sample(
             'nonunit', 1434110794, 1, 'COUNTER', host='hostname')
 
-        self.assertEqual(
-            a.metrics[0].unit, 'Bytes')
+        self.assertEqual(a._metrics['unit'].unit, 'Bytes')
 
-        self.assertEqual(a.metrics[1].unit, '')
+        self.assertEqual(a._metrics['nonunit'].unit, '')
 
     def test_with_min(self):
         a = netuitive.Element()
@@ -339,47 +346,15 @@ class TestElementSamples(unittest.TestCase):
         a.add_sample(
             'mongo.wiredTiger.cache.eviction$server populating queue,:but not evicting pages', 1434110794, 1, 'COUNTER', host='hostname')
 
-        self.assertEqual(a.metrics[
-                         0].id, 'mongo.wiredTiger.cache.eviction_server_populating_queue__but_not_evicting_pages')
+        self.assertEqual(a._metrics['mongo.wiredTiger.cache.eviction_server_populating_queue__but_not_evicting_pages'].id, 'mongo.wiredTiger.cache.eviction_server_populating_queue__but_not_evicting_pages')
 
     def test_post_format(self):
         a = netuitive.Element()
 
         a.add_sample(
-            'nonsparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname')
-        a.add_sample(
-            'sparseDataStrategy', 1434110794, 1, 'COUNTER', host='hostname', sparseDataStrategy='ReplaceWithZero')
-
-        a.add_sample(
-            'unit', 1434110794, 1, 'COUNTER', host='hostname', unit='Bytes')
-
-        a.add_sample(
-            'nonunit', 1434110794, 1, 'COUNTER', host='hostname')
-
-        a.add_sample(
-            'tagged', 1434110794, 1, 'COUNTER', host='hostname', tags=[{'utilization': 'true'}])
-
-        a.add_sample(
-            'min', 1434110794, 1, 'COUNTER', host='hostname', min=0)
-
-        a.add_sample(
-            'max', 1434110794, 1, 'COUNTER', host='hostname', max=100)
-
-        a.add_sample(
-            'avg', 1434110794, 1, 'COUNTER', host='hostname', avg=50)
-
-        a.add_sample(
-            'sum', 1434110794, 1, 'COUNTER', host='hostname', sum=2)
-
-        a.add_sample(
-            'cnt', 1434110794, 1, 'COUNTER', host='hostname', cnt=3)
-
-        a.add_sample(
             'min.max.avg.sum.cnt', 1434110794, 1, 'COUNTER', host='hostname', min=0, max=100, avg=50, sum=2, cnt=3)
 
-        a.add_sample(
-            'cnt2', 1475158966202, 1, 'COUNTER', host='hostname', cnt=3, ts_is_ms=True)
-
+        a.merge_metrics()
         ajson = json.dumps(
             [a], default=lambda o: o.__dict__, sort_keys=True)
 

@@ -45,3 +45,8 @@ docs/_build
 # special
 testclient.py
 .coveralls.yml
+
+## IDE
+.idea
+*.iml
+venv
