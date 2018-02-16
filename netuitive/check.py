@@ -7,15 +7,15 @@ class Check(object):
         :type name: string
         :param elementId: Associated Element ID
         :type elementId: string
-        :param interval: Check interval in seconds
-        :type interval: int
+        :param ttl: Check TTL in seconds
+        :type ttl: int
     """
 
     def __init__(self,
                  name,
                  elementId,
-                 interval):
+                 ttl):
 
         self.name = name
         self.elementId = elementId
-        self.interval = interval
+        self.ttl = ttl

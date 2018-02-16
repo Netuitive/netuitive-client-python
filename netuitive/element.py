@@ -28,6 +28,7 @@ class Element(object):
         self.samples = []
         self.id = None
         self.name = None
+        self._metrics = {}
 
         if location is not None:
             self.location = location
@@ -35,10 +36,18 @@ class Element(object):
     def _sanitize(self, s):
         """
         Sanitize the name of a metric to remove unwanted chars
-
         """
 
         return re.sub('[^a-zA-Z0-9\\._-]', '_', s)
+
+    def merge_metrics(self):
+        """
+        Merge metrics in the internal _metrics dict to metrics list
+        and delete the internal _metrics
+        """
+
+        self.metrics.extend(self._metrics.values())
+        del self._metrics
 
     def add_attribute(self, name, value):
         """
@@ -134,23 +143,15 @@ class Element(object):
 
         metricIdSan = self._sanitize(metricId)
 
-        if len(self.metrics) > 0:
-            t = list(self.metrics)
+        if self._metrics is None:
+            self._metrics = {}
 
-            if metricIdSan not in t:
-                self.metrics.append(
-                    Metric(metricIdSan,
-                           metricType,
-                           sparseDataStrategy,
-                           unit,
-                           Tags))
-        else:
-            self.metrics.append(
-                Metric(metricIdSan,
-                       metricType,
-                       sparseDataStrategy,
-                       unit,
-                       Tags))
+        if self._metrics.get(metricIdSan) is None:
+            self._metrics[metricIdSan] = Metric(metricIdSan,
+                                                metricType,
+                                                sparseDataStrategy,
+                                                unit,
+                                                Tags)
 
         if timestamp is None:
             ts = to_ms_timestamp_int(datetime.datetime.utcnow())
@@ -172,4 +173,5 @@ class Element(object):
 
     def clear_samples(self):
         self.metrics = []
+        self._metrics = {}
         self.samples = []
