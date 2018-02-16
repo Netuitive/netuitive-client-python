@@ -143,8 +143,8 @@ class Element(object):
 
         metricIdSan = self._sanitize(metricId)
 
-        if self._metrics is None:
-            self._metrics = {}
+        if not hasattr(self, "_metrics"):
+            setattr(self, "_metrics", {})
 
         if self._metrics.get(metricIdSan) is None:
             self._metrics[metricIdSan] = Metric(metricIdSan,
@@ -173,5 +173,5 @@ class Element(object):
 
     def clear_samples(self):
         self.metrics = []
-        self._metrics = {}
+        setattr(self, "_metrics", {})
         self.samples = []
