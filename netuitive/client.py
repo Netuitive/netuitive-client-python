@@ -26,7 +26,6 @@ class Client(object):
         :param api_key: API Key for data source
         :type api_key: string
 
-
     """
 
     def __init__(self, url='https://api.app.netuitive.com/ingest',
@@ -48,6 +47,7 @@ class Client(object):
         self.kill_codes = [410, 418]
         self.post_error_count = 0
         self.max_post_errors = 10
+	    self.post_check_timeout = 5
 
     def post(self, element):
         """
@@ -152,10 +152,12 @@ class Client(object):
                 'error posting payload to api ingest endpoint (%s): %s',
                 self.eventurl, e)
 
-    def post_check(self, check):
+    def post_check(self, check, timeout):
         """
             :param check: Check to post to Metricly
             :type check: object
+	        :param timeout: Timeout for post call to checks.url
+	        :type timeout: integer in seconds
         """
 
         if self.disabled is True:
@@ -171,7 +173,7 @@ class Client(object):
             headers = {'User-Agent': self.agent}
             request = urllib2.Request(
                 url, data='', headers=headers)
-            resp = urllib2.urlopen(request)
+            resp = urllib2.urlopen(request, None, timeout)
             logging.debug("Response code: %d", resp.getcode())
             resp.close()
 
@@ -193,6 +195,9 @@ class Client(object):
             logging.exception(
                 'error posting payload to api ingest endpoint (%s): %s',
                 url, e)
+
+    def post_check(self, check):
+	    post_check(self, check, self.post_check_timeout)
 
     def check_time_offset(self, epoch=None):
         req = urllib2.Request(self.timeurl,
