@@ -30,7 +30,9 @@ class Client(object):
     """
 
     def __init__(self, url='https://api.app.netuitive.com/ingest',
-                 api_key='apikey', agent='Netuitive-Python/' + __version__, connection_timeout=5):
+                 api_key='apikey',
+                 agent='Netuitive-Python/' + __version__,
+                 connection_timeout=5):
 
         if url.endswith('/'):
             url = url[:-1]
@@ -187,7 +189,8 @@ class Client(object):
                                   'See previous errors for details.')
             else:
                 logging.exception(
-                    'HTTPError posting payload to api ingest endpoint (%s): %s',
+                    'HTTPError posting payload to api ingest endpoint'
+                    + ' (%s): %s',
                     url, e)
 
     def check_time_offset(self, epoch=None):
