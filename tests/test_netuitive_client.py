@@ -402,6 +402,10 @@ class TestClientCheckPost(unittest.TestCase):
     def setUp(self):
         pass
 
+    def test_client_connection_timeout(self):
+        a = netuitive.Client(connection_timeout=30)
+        self.assertEqual(a.connection_timeout, 30)
+
     @mock.patch('netuitive.client.urllib2.urlopen')
     @mock.patch('netuitive.client.logging')
     def test_success(self, mock_logging, mock_post):
@@ -417,6 +421,9 @@ class TestClientCheckPost(unittest.TestCase):
 
         self.assertTrue(resp)
 
+        args, kwargs = mock_post.call_args
+        self.assertEqual(kwargs['timeout'], 5)
+
         self.assertEqual(mock_logging.exception.call_args_list, [])
 
     @mock.patch('netuitive.client.urllib2.urlopen')
@@ -431,27 +438,11 @@ class TestClientCheckPost(unittest.TestCase):
 
         e = netuitive.Check('check', 'test', 60)
 
-        resp = a.post_event(e)
+        resp = a.post_check(e)
 
         self.assertNotEqual(resp, True)
 
-        self.assertEqual(mock_logging.exception.call_args_list[0][0][0], 'error posting payload to api ingest endpoint (%s): %s')
-
-    @mock.patch('netuitive.client.urllib2.urlopen')
-    @mock.patch('netuitive.client.logging')
-    def test_failure_general(self, mock_logging, mock_post):
-        mock_post.side_effect = urllib2.URLError('something')
-
-        # test infrastructure endpoint url creation
-        a = netuitive.Client(api_key='apikey')
-
-        c = netuitive.Check('check', 'test', 60)
-
-        resp = a.post_check(c)
-
-        self.assertNotEqual(resp, True)
-
-        self.assertEqual(mock_logging.exception.call_args_list[0][0][0], 'error posting payload to api ingest endpoint (%s): %s')
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][0], 'HTTPError posting payload to api ingest endpoint (%s): %s')
 
     @mock.patch('netuitive.client.urllib2.urlopen')
     @mock.patch('netuitive.client.logging')
@@ -509,7 +500,7 @@ class TestClientCheckPost(unittest.TestCase):
         self.assertNotEqual(resp, True)
         self.assertFalse(resp2)
         self.assertFalse(a.disabled)
-        self.assertEqual(mock_logging.exception.call_args_list[0][0][0], 'error posting payload to api ingest endpoint (%s): %s')
+        self.assertEqual(mock_logging.exception.call_args_list[0][0][0], 'HTTPError posting payload to api ingest endpoint (%s): %s')
 
     def tearDown(self):
         pass

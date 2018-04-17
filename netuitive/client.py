@@ -30,7 +30,7 @@ class Client(object):
     """
 
     def __init__(self, url='https://api.app.netuitive.com/ingest',
-                 api_key='apikey', agent='Netuitive-Python/' + __version__):
+                 api_key='apikey', agent='Netuitive-Python/' + __version__, connection_timeout=5):
 
         if url.endswith('/'):
             url = url[:-1]
@@ -48,6 +48,7 @@ class Client(object):
         self.kill_codes = [410, 418]
         self.post_error_count = 0
         self.max_post_errors = 10
+        self.connection_timeout = connection_timeout
 
     def post(self, element):
         """
@@ -171,7 +172,7 @@ class Client(object):
             headers = {'User-Agent': self.agent}
             request = urllib2.Request(
                 url, data='', headers=headers)
-            resp = urllib2.urlopen(request)
+            resp = urllib2.urlopen(request, timeout=self.connection_timeout)
             logging.debug("Response code: %d", resp.getcode())
             resp.close()
 
@@ -186,13 +187,8 @@ class Client(object):
                                   'See previous errors for details.')
             else:
                 logging.exception(
-                    'error posting payload to api ingest endpoint (%s): %s',
+                    'HTTPError posting payload to api ingest endpoint (%s): %s',
                     url, e)
-
-        except Exception as e:
-            logging.exception(
-                'error posting payload to api ingest endpoint (%s): %s',
-                url, e)
 
     def check_time_offset(self, epoch=None):
         req = urllib2.Request(self.timeurl,
