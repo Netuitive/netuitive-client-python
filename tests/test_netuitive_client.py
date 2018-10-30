@@ -441,7 +441,7 @@ class TestClientCheckPost(unittest.TestCase):
         resp = a.post_check(e)
 
         self.assertNotEqual(resp, True)
-        self.assertEquals(mock_post.call_count, a.request_repeat_time)
+        self.assertEquals(mock_post.call_count, a.max_check_retry_count + 1)
         self.assertEqual(mock_logging.exception.call_args_list[0][0][0], 'HTTPError posting payload to api ingest endpoint (%s): %s')
 
     @mock.patch('netuitive.client.urllib2.urlopen')

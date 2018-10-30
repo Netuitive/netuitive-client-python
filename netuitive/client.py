@@ -51,7 +51,7 @@ class Client(object):
         self.post_error_count = 0
         self.max_post_errors = 10
         self.connection_timeout = connection_timeout
-        self.request_repeat_time = 4
+        self.max_check_retry_count = 3
 
     def post(self, element):
         """
@@ -222,12 +222,13 @@ class Client(object):
             return(False)
 
     def _repeat_request(self, request, timeout):
-        for i in range(self.request_repeat_time):
+        for i in range(self.max_check_retry_count + 1):
             try:
                 return urllib2.urlopen(request, timeout=timeout)
             except urllib2.HTTPError as e:
-                if 500 <= e.code < 600 and i < self.request_repeat_time - 1:
-                    logging.debug("Response code: %d, retry count: %d from %d", e.code, i + 1, self.request_repeat_time)
+                if 500 <= e.code < 600 and i < self.max_check_retry_count:
+                    logging.debug("Response code: %d, retry count: %d from %d",
+                                  e.code, i + 1, self.max_check_retry_count)
                     time.sleep(0.25 * (i + 1))
                 else:
                     raise
