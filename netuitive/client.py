@@ -51,6 +51,7 @@ class Client(object):
         self.post_error_count = 0
         self.max_post_errors = 10
         self.connection_timeout = connection_timeout
+        self.max_check_retry_count = 3
 
     def post(self, element):
         """
@@ -170,11 +171,11 @@ class Client(object):
             + check.name + '/' \
             + check.elementId + '/' \
             + str(check.ttl)
+        headers = {'User-Agent': self.agent}
         try:
-            headers = {'User-Agent': self.agent}
             request = urllib2.Request(
                 url, data='', headers=headers)
-            resp = urllib2.urlopen(request, timeout=self.connection_timeout)
+            resp = self._repeat_request(request, self.connection_timeout)
             logging.debug("Response code: %d", resp.getcode())
             resp.close()
 
@@ -219,3 +220,15 @@ class Client(object):
 
         else:
             return(False)
+
+    def _repeat_request(self, request, timeout):
+        for i in range(self.max_check_retry_count + 1):
+            try:
+                return urllib2.urlopen(request, timeout=timeout)
+            except urllib2.HTTPError as e:
+                if 500 <= e.code < 600 and i < self.max_check_retry_count:
+                    logging.debug("Response code: %d, retry count: %d from %d",
+                                  e.code, i + 1, self.max_check_retry_count)
+                    time.sleep(0.25 * (i + 1))
+                else:
+                    raise
