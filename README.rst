@@ -102,6 +102,15 @@ Create an Event
 
 ``MyEvent = netuitive.Event(hst, 'INFO', 'test event','this is a test message', 'INFO')``
 
+Add a Custom Check
+~~~~~~~~~~~~~~~~
+
+``MyCheck = netuitive.Check('heartbeat', 'element', 60)``
+
+POST to ``/check/{apiId}/{checkName}/{elementFqn}/{ttl}``
+
+See our `checks documentation <https://docs.metricly.com/alerts-notifications/checks/custom-checks/>`_ for more information about custom check parameters and a cURL example.
+
 Send the Event
 ~~~~~~~~~~~~~~~
 
