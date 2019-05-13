@@ -3,6 +3,12 @@
 History
 -------
 
+Version next (date)
+---------------------
+
+* Add timeouts to client.py
+
+
 0.2.3 (2017-02-14)
 ---------------------
 
