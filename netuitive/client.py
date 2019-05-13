@@ -79,7 +79,7 @@ class Client(object):
                        'User-Agent': self.agent}
             request = urllib2.Request(
                 self.dataurl, data=payload, headers=headers)
-            resp = urllib2.urlopen(request)
+            resp = urllib2.urlopen(request, timeout=self.connection_timeout)
             logging.debug("Response code: %d", resp.getcode())
 
             resp.close()
@@ -133,7 +133,7 @@ class Client(object):
                        'User-Agent': self.agent}
             request = urllib2.Request(
                 self.eventurl, data=payload, headers=headers)
-            resp = urllib2.urlopen(request)
+            resp = urllib2.urlopen(request, timeout=self.connection_timeout)
             logging.debug("Response code: %d", resp.getcode())
             resp.close()
 
@@ -198,7 +198,7 @@ class Client(object):
         req = urllib2.Request(self.timeurl,
                               headers={'User-Agent': self.agent})
         req.get_method = lambda: 'HEAD'
-        resp = urllib2.urlopen(req)
+        resp = urllib2.urlopen(req, timeout=self.connection_timeout)
         rdate = resp.info()['Date']
 
         if epoch is None:
