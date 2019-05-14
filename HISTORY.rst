@@ -3,7 +3,7 @@
 History
 -------
 
-Version next (date)
+0.3.5 (2019-05-14)
 ---------------------
 
 * Add timeouts to client.py
