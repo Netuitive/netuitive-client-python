@@ -12,7 +12,7 @@ Netuitive Python Client
 
 | The Netuitive Python Client allows you to push data to `Netuitive <https://www.netuitive.com>`_ using Python. Netuitive provides an adaptive monitoring and analytics platform for cloud infrastructure and web applications.
 
-| For more information, check out the `help docs <https://help.netuitive.com>`_ or contact `support <mailto:support@netuitive.com>`_.
+| For more information, check out the `help docs <https://docs.virtana.com/>`_ or contact `support <mailto:support@netuitive.com>`_.
 
 The Netuitive Python Client can...
 
