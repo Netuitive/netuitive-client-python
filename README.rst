@@ -10,13 +10,13 @@ Netuitive Python Client
 .. |CoverageStatus| image:: https://coveralls.io/repos/github/Netuitive/netuitive-client-python/badge.svg?branch=master
 .. _CoverageStatus: https://coveralls.io/github/Netuitive/netuitive-client-python?branch=master
 
-| The Netuitive Python Client allows you to push data to `Netuitive <https://www.netuitive.com>`_ using Python. Netuitive provides an adaptive monitoring and analytics platform for cloud infrastructure and web applications.
+| The Cloudwisdom Python Client allows you to push data to `Cloudwisdom <https://www.virtana.com/products/cloudwisdom/>`_ using Python. Cloudwisdom provides an adaptive monitoring and analytics platform for cloud infrastructure and web applications.
 
-| For more information, check out the `help docs <https://help.netuitive.com>`_ or contact `support <mailto:support@netuitive.com>`_.
+| For more information, check out the `help docs <https://docs.virtana.com/>`_ or contact `support <mailto:cloudwisdom.support@virtana.com>`_.
 
-The Netuitive Python Client can...
+The Cloudwisdom Python Client can...
 
-* ...create an `element <https://help.netuitive.com/Content/Performance/Elements/elements.htm>`_ in Netuitive with the following data:
+* ...create an `element <https://docs.virtana.com/en/inventory-265608.html>`_ in Cloudwisdom with the following data:
     * Element Name
     * Attributes
     * Tags
@@ -25,7 +25,7 @@ The Netuitive Python Client can...
     * Location
     * Metric Tags
 
-* ...create an `event <https://help.netuitive.com/Content/Events/events.htm>`_ in Netuitive with the following data:
+* ...create an `event in Cloudwisdom with the following data:
     * Element Name
     * Event Type
     * Title
@@ -34,7 +34,7 @@ The Netuitive Python Client can...
     * Tags
     * Source
 
-Using the Python Netuitive Client
+Using the Python Cloudwisdom Client
 ----------------------------------
 
 Setup the Client
@@ -114,7 +114,7 @@ Check that our local time is set correctly (returns True/False)
 
 Docker Example
 ----------
-Included in this project is an example python script (`example/example.py`) which can be built and run within a Docker container. To send test data into your Netuitive environment run the following:
+Included in this project is an example python script (`example/example.py`) which can be built and run within a Docker container. To send test data into your Cloudwisdom environment run the following:
 
 ::
 
@@ -123,9 +123,9 @@ Included in this project is an example python script (`example/example.py`) whic
 
 ::
 
-Make sure to use your **Custom** Netuitive datasource API key.
+Make sure to use your **Custom** Cloudwisdom datasource API key.
 
 Copyright and License
 ---------------------
 
-Copyright 2015-2016 Netuitive, Inc. under [the Apache 2.0 license](LICENSE).
+Copyright 2015-2016 Cloudwisdom, Inc. under [the Apache 2.0 license](LICENSE).
