@@ -10,13 +10,13 @@ Netuitive Python Client
 .. |CoverageStatus| image:: https://coveralls.io/repos/github/Netuitive/netuitive-client-python/badge.svg?branch=master
 .. _CoverageStatus: https://coveralls.io/github/Netuitive/netuitive-client-python?branch=master
 
-| The Netuitive Python Client allows you to push data to `Netuitive <https://www.netuitive.com>`_ using Python. Netuitive provides an adaptive monitoring and analytics platform for cloud infrastructure and web applications.
+| The Netuitive Python Client allows you to push data to `Netuitive <https://www.virtana.com/products/cloudwisdom/>`_ using Python. Netuitive provides an adaptive monitoring and analytics platform for cloud infrastructure and web applications.
 
-| For more information, check out the `help docs <https://help.netuitive.com>`_ or contact `support <mailto:support@netuitive.com>`_.
+| For more information, check out the `help docs <https://docs.virtana.com/>`_ or contact `support <mailto:cloudwisdom.support@virtana.com>`_.
 
 The Netuitive Python Client can...
 
-* ...create an `element <https://help.netuitive.com/Content/Performance/Elements/elements.htm>`_ in Netuitive with the following data:
+* ...create an `element <https://docs.virtana.com/en/inventory-265608.html>`_ in Netuitive with the following data:
     * Element Name
     * Attributes
     * Tags
@@ -25,7 +25,7 @@ The Netuitive Python Client can...
     * Location
     * Metric Tags
 
-* ...create an `event <https://help.netuitive.com/Content/Events/events.htm>`_ in Netuitive with the following data:
+* ...create an `event in Netuitive with the following data:
     * Element Name
     * Event Type
     * Title
